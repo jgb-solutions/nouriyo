@@ -6,6 +6,8 @@
 
   class Client extends Model
   {
+    protected $guarded = [];
+
     public function orders()
     {
       return $this->hasMany(Order::class);

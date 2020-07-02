@@ -6,6 +6,8 @@
 
   class Order extends Model
   {
+    protected $guarded = [];
+
     public function client()
     {
       return $this->belongsTo(User::class);
@@ -13,17 +15,17 @@
 
     public function products()
     {
-      return $this->belongsToMany(Product::class);
+      return $this->belongsToMany(Product::class, 'order_details');
     }
 
     public function packages()
     {
-      return $this->belongsToMany(Package::class);
+      return $this->belongsToMany(Package::class, 'order_details');
     }
 
     public function beneficiaries()
     {
-      return $this->belongsToMany(Beneficiary::class);
+      return $this->belongsToMany(Beneficiary::class, 'order_details');
     }
 
     public static function getHash()

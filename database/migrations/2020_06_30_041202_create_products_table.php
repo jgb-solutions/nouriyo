@@ -19,8 +19,8 @@
         $table->unsignedInteger('quantity');
         $table->unsignedFloat('buying_price');
         $table->unsignedFloat('selling_price');
-        $table->string('image');
-        $table->text('description');
+        $table->string('image')->nullable();
+        $table->text('description')->nullable();
         $table->timestamps();
       });
     }

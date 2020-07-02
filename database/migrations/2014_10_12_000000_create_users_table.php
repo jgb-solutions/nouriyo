@@ -18,8 +18,7 @@
         $table->string('email')->unique();
         $table->string('password');
         $table->string('first_name');
-        $table->string('last_name');
-        $table->string('business')->nullable();
+        $table->string('last_name')->nullable();
         $table->string('address')->nullable();
         $table->string('phone')->nullable();
         $table->string('country')->nullable();

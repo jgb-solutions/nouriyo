@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
+use App\Models\Product;
 class ProductsSeeder extends Seeder
 {
     /**
@@ -11,6 +12,8 @@ class ProductsSeeder extends Seeder
      */
     public function run()
     {
-        //
+      DB::table('products')->delete();
+
+      factory(Product::class, 500)->create();
     }
 }

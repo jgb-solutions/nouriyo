@@ -1,6 +1,6 @@
-@extends('layout.dashboard')
+@extends('layout.app')
 
-@section('content')
+@section('page')
 @section('styles')
     <style>
         .bd-placeholder-img {
@@ -120,7 +120,7 @@
                 <input type="checkbox" value="remember-me"> Remember me
             </label>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Login in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
     </form>
 </div>
 @endsection

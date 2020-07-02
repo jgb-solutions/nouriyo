@@ -105,19 +105,55 @@
             border-radius: 0;
         }
 
-        .form-control-dark {
-            color: #fff;
-            background-color: rgba(255, 255, 255, .1);
-            border-color: rgba(255, 255, 255, .1);
-        }
-
-        .form-control-dark:focus {
-            border-color: transparent;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
-        }
     </style>
 @endsection
 
-@yield('content')
+<nav class="navbar sticky-top flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="{{route('dashboard.index')}}">{{config('app.name')}}</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse"
+            data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <form class="form-inline">
+        <div class="form-group row">
+            <div class="col-md-6">
+                <input class="form-control w-100" type="text" placeholder="Search"
+                       aria-label="Search">
+            </div>
+            <div class="col-md-4">
+                <select class="custom-select" id="validationCustom04" required>
+                    <option selected value="products">Products</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary my-1">Search</button>
+            </div>
+        </div>
+    </form>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="{{route('auth.logout')}}">Log Out</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="sidebar-sticky pt-3">
+                @include('dashboard.menu')
+            </div>
+        </nav>
+
+        @yield('content')
+
+    </div>
+</div>
+
 
 @endsection
