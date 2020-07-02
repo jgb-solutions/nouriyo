@@ -14,11 +14,12 @@ Route::middleware(['auth'])->group(function() {
 
     Route::get('/products', 'DashboardController@products')->name('products');
     Route::post('/products', 'DashboardController@add_product')->name('add-products');
-    Route::put('/products', 'DashboardController@edit_products')->name('edit-products');
-    Route::delete('/products/{product}', 'DashboardController@delete_products')->name('delete-products');
+    Route::put('/products/{product}', 'DashboardController@update_product')->name('update-product');
+    Route::delete('/products/{product}', 'DashboardController@delete_product')->name('delete-product');
 
     Route::get('/packages', 'DashboardController@packages')->name('packages');
     Route::get('/clients', 'DashboardController@clients')->name('clients');
+    Route::get('/agents', 'DashboardController@agents')->name('agents');
     Route::get('/beneficiaries', 'DashboardController@beneficiaries')->name('beneficiaries');
     Route::get('/reports', 'DashboardController@reports')->name('reports');
   });

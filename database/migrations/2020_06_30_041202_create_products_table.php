@@ -15,7 +15,7 @@
     {
       Schema::create('products', function (Blueprint $table) {
         $table->id();
-        $table->string('name');
+        $table->string('name')->unique();
         $table->unsignedInteger('quantity');
         $table->unsignedFloat('buying_price');
         $table->unsignedFloat('selling_price');

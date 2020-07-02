@@ -18,6 +18,8 @@
                id="buying_price"
                name="buying_price"
                placeholder="Enter buying price"
+               step="0.01"
+               min="0"
                value="{{!empty($product) ? $product->buying_price : old('buying_price')}}">
     </div>
 
@@ -29,8 +31,22 @@
                id="selling_price"
                name="selling_price"
                placeholder="Enter selling price"
+               step="0.01"
+               min="0"
                value="{{!empty($product) ? $product->selling_price : old('selling_price')}}">
     </div>
+
+    <div class="form-group col-12">
+        <label for="name">Quantity <b>*</b></label>
+        <input type="number"
+               required
+               class="form-control"
+               id="quantity"
+               name="quantity"
+               placeholder="Enter the quantity"
+               value="{{!empty($product) ? $product->quantity : old('quantity')}}">
+    </div>
+
 
     <div class="form-group col-6">
         <label for="image">Choose an image</label>
@@ -47,10 +63,5 @@
         <textarea class="form-control"
                   id="description" rows="3"
                   name="description">{{!empty($product) ? $product->description : old('description')}}</textarea>
-    </div>
-
-
-    <div class="form-group col-12">
-        <button type="submit" class="btn btn-primary">Add Product</button>
     </div>
 </div>

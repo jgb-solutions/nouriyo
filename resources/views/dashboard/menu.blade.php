@@ -27,6 +27,11 @@
         </a>
     </li>
     <li class="nav-item">
+        <a class="nav-link" href="{{route('dashboard.agents')}}">
+            Clients
+        </a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link" href="{{route('dashboard.reports')}}">
             Reports
         </a>

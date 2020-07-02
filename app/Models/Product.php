@@ -17,4 +17,9 @@ class Product extends Model
   {
     return $this->belongsToMany(Order::class, 'order_details');
   }
+
+  public function getImageUrlAttribute()
+  {
+    return asset($this->image);
+  }
 }
