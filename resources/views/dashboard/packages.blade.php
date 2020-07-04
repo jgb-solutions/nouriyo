@@ -3,29 +3,29 @@
 @section('content')
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Products</h1>
+            <h1 class="h2">Packages</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group mr-2">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProductModal">Add
-                        a product
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPackageModal">Add
+                        a package
                     </button>
-                    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog"
-                         aria-labelledby="addProductModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="addPackageModal" tabindex="-1" role="dialog"
+                         aria-labelledby="addPackageModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="addProductModalLabel">Add a new Product</h5>
+                                    <h5 class="modal-title" id="addPackageModalLabel">Add a new Package</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form method="post" action="{{route('dashboard.products')}}"
+                                    <form method="post" action="{{route('dashboard.packages')}}"
                                           enctype="multipart/form-data">
                                         @csrf
 
-                                        @include('dashboard.product-form-inputs')
-                                        <button type="submit" class="btn btn-primary">Add Product</button>
+                                        @include('dashboard.package-form-inputs')
+                                        <button type="submit" class="btn btn-primary">Add Package</button>
                                     </form>
                                 </div>
 
@@ -41,7 +41,7 @@
 
         @include('inc.errors')
 
-        @if($products->count())
+        @if($packages->count())
             <div class="table-responsive">
                 <table class="table table-striped table-sm table-bordered">
                     <thead>
@@ -60,34 +60,34 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($products as $product)
+                    @foreach($packages as $package)
                         <tr>
                             <td>
                                 <img width="50"
-                                     src="{{ $product->image ? $product->image : 'https://via.placeholder.com/50C/O'}}"/>
+                                     src="{{ $package->image ? $package->image : 'https://via.placeholder.com/50C/O'}}"/>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-link" data-toggle="modal"
-                                        data-target="#showProductModal-{{$product->id}}">
-                                    {{$product->name}}
+                                        data-target="#showPackageModal-{{$package->id}}">
+                                    {{$package->name}}
                                 </button>
-                                <div class="modal fade" id="showProductModal-{{$product->id}}" tabindex="-1"
+                                <div class="modal fade" id="showPackageModal-{{$package->id}}" tabindex="-1"
                                      role="dialog"
-                                     aria-labelledby="showProductModalLabel" aria-hidden="true">
+                                     aria-labelledby="showPackageModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title"
-                                                    id="showProductModalLabel">{{$product->name}}</h5>
+                                                    id="showPackageModalLabel">{{$package->name}}</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <div><img height="200" src="{{$product->image_url}}"/></div>
+                                                <div><img height="200" src="{{$package->image_url}}"/></div>
                                                 <p>
-                                                    {{$product->description}}
+                                                    {{$package->description}}
                                                 </p>
                                             </div>
 
@@ -100,24 +100,24 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>{{$product->quantity}}</td>
+                            <td>{{$package->quantity}}</td>
                             @if(auth()->user()->admin)
-                                <td>{{$product->buying_price}}</td>
+                                <td>{{$package->buying_price}}</td>
                             @endif
-                            <td>{{$product->selling_price}}</td>
+                            <td>{{$package->selling_price}}</td>
                             @if(auth()->user()->admin)
                                 <td>
                                     <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#editProductModal-{{$product->id}}">Edit
+                                            data-target="#editPackageModal-{{$package->id}}">Edit
                                     </button>
-                                    <div class="modal fade" id="editProductModal-{{$product->id}}" tabindex="-1"
+                                    <div class="modal fade" id="editPackageModal-{{$package->id}}" tabindex="-1"
                                          role="dialog"
-                                         aria-labelledby="editProductModalLabel" aria-hidden="true">
+                                         aria-labelledby="editPackageModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="editProductModalLabel">
-                                                        Edit {{$product->name}}</h5>
+                                                    <h5 class="modal-title" id="editPackageModalLabel">
+                                                        Edit {{$package->name}}</h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
@@ -125,12 +125,12 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <form method="post"
-                                                          action="{{route('dashboard.update-product', $product->id)}}"
+                                                          action="{{route('dashboard.update-package', $package->id)}}"
                                                           enctype="multipart/form-data">
                                                         @method("put")
                                                         @csrf
 
-                                                        @include('dashboard.product-form-inputs', ['product' => $product])
+                                                        @include('dashboard.package-form-inputs', ['package' => $package])
                                                         <button type="submit" class="btn btn-primary">Update</button>
                                                     </form>
                                                 </div>
@@ -146,7 +146,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <form method="post" action="{{route('dashboard.delete-product', $product->id)}}">
+                                    <form method="post" action="{{route('dashboard.delete-package', $package->id)}}">
                                         @method("delete")
                                         @csrf
                                         <button onclick='return confirm("Are you sure?")' type="submit"
@@ -160,7 +160,7 @@
                     </tbody>
                 </table>
             </div>
-            {{ $products->links() }}
+            {{ $packages->links() }}
         @endif
     </main>
 @endsection

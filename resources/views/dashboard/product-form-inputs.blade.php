@@ -11,7 +11,7 @@
     </div>
 
     <div class="form-group col-12">
-        <label for="name">Buying Price <b>*</b></label>
+        <label for="buying_price">Buying Price <b>*</b></label>
         <input type="number"
                required
                class="form-control"
@@ -24,7 +24,7 @@
     </div>
 
     <div class="form-group col-12">
-        <label for="name">Selling Price <b>*</b></label>
+        <label for="selling_price">Selling Price <b>*</b></label>
         <input type="number"
                required
                class="form-control"
@@ -37,7 +37,7 @@
     </div>
 
     <div class="form-group col-12">
-        <label for="name">Quantity <b>*</b></label>
+        <label for="quantity">Quantity <b>*</b></label>
         <input type="number"
                required
                class="form-control"
@@ -52,7 +52,7 @@
         <label for="image">Choose an image</label>
         <input type="file"
                accept="image/*"
-               class="form-control"
+               class="form-control-file"
                id="image"
                name="image"
                placeholder="Choose an image for the product">

@@ -3,29 +3,29 @@
 @section('content')
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Products</h1>
+            <h1 class="h2">Agents</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group mr-2">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProductModal">Add
-                        a product
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAgentModal">
+                        Add an Agent
                     </button>
-                    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog"
-                         aria-labelledby="addProductModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="addAgentModal" tabindex="-1" role="dialog"
+                         aria-labelledby="addAgentModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="addProductModalLabel">Add a new Product</h5>
+                                    <h5 class="modal-title" id="addAgentModalLabel">Add a new Agent</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form method="post" action="{{route('dashboard.products')}}"
+                                    <form method="post" action="{{route('dashboard.agents')}}"
                                           enctype="multipart/form-data">
                                         @csrf
 
-                                        @include('dashboard.product-form-inputs')
-                                        <button type="submit" class="btn btn-primary">Add Product</button>
+                                        @include('dashboard.agent-form-inputs')
+                                        <button type="submit" class="btn btn-primary">Add Agent</button>
                                     </form>
                                 </div>
 
@@ -41,18 +41,18 @@
 
         @include('inc.errors')
 
-        @if($products->count())
+        @if($agents->count())
             <div class="table-responsive">
                 <table class="table table-striped table-sm table-bordered">
                     <thead>
                     <tr>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Quantity</th>
+                        <th>Full Name</th>
+                        <th>Business</th>
                         @if(auth()->user()->admin)
-                            <th>Buying Price</th>
+                            <th>Country</th>
                         @endif
-                        <th>Selling Price</th>
+                        <th>Limit</th>
+                        <th>Active</th>
                         @if(auth()->user()->admin)
                             <th>Edit</th>
                             <th>Delete</th>
@@ -60,34 +60,30 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($products as $product)
+                    @foreach($agents as $agent)
                         <tr>
                             <td>
-                                <img width="50"
-                                     src="{{ $product->image ? $product->image : 'https://via.placeholder.com/50C/O'}}"/>
-                            </td>
-                            <td>
                                 <button type="button" class="btn btn-link" data-toggle="modal"
-                                        data-target="#showProductModal-{{$product->id}}">
-                                    {{$product->name}}
+                                        data-target="#showAgentModal-{{$agent->id}}">
+                                    {{$agent->fullName}}
                                 </button>
-                                <div class="modal fade" id="showProductModal-{{$product->id}}" tabindex="-1"
+                                <div class="modal fade" id="showAgentModal-{{$agent->id}}" tabindex="-1"
                                      role="dialog"
-                                     aria-labelledby="showProductModalLabel" aria-hidden="true">
+                                     aria-labelledby="showAgentModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title"
-                                                    id="showProductModalLabel">{{$product->name}}</h5>
+                                                    id="showAgentModalLabel">{{$agent->fullName}}</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <div><img height="200" src="{{$product->image_url}}"/></div>
+                                                <div><img height="200" src="{{$agent->image_url}}"/></div>
                                                 <p>
-                                                    {{$product->description}}
+                                                    {{$agent->description}}
                                                 </p>
                                             </div>
 
@@ -100,24 +96,25 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>{{$product->quantity}}</td>
+                            <td>{{$agent->business}}</td>
                             @if(auth()->user()->admin)
-                                <td>{{$product->buying_price}}</td>
+                                <td>{{$agent->country}}</td>
                             @endif
-                            <td>{{$product->selling_price}}</td>
+                            <td>{{$agent->limit}}</td>
+                            <td>{{$agent->active ? 'Yes' : 'No'}}</td>
                             @if(auth()->user()->admin)
                                 <td>
                                     <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#editProductModal-{{$product->id}}">Edit
+                                            data-target="#editAgentModal-{{$agent->id}}">Edit
                                     </button>
-                                    <div class="modal fade" id="editProductModal-{{$product->id}}" tabindex="-1"
+                                    <div class="modal fade" id="editAgentModal-{{$agent->id}}" tabindex="-1"
                                          role="dialog"
-                                         aria-labelledby="editProductModalLabel" aria-hidden="true">
+                                         aria-labelledby="editAgentModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="editProductModalLabel">
-                                                        Edit {{$product->name}}</h5>
+                                                    <h5 class="modal-title" id="editAgentModalLabel">
+                                                        Edit {{$agent->fullName}}</h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
@@ -125,12 +122,12 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <form method="post"
-                                                          action="{{route('dashboard.update-product', $product->id)}}"
+                                                          action="{{route('dashboard.update-agent', $agent->id)}}"
                                                           enctype="multipart/form-data">
                                                         @method("put")
                                                         @csrf
 
-                                                        @include('dashboard.product-form-inputs', ['product' => $product])
+                                                        @include('dashboard.agent-form-inputs', ['agent' => $agent])
                                                         <button type="submit" class="btn btn-primary">Update</button>
                                                     </form>
                                                 </div>
@@ -146,7 +143,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <form method="post" action="{{route('dashboard.delete-product', $product->id)}}">
+                                    <form method="post" action="{{route('dashboard.delete-agent', $agent->id)}}">
                                         @method("delete")
                                         @csrf
                                         <button onclick='return confirm("Are you sure?")' type="submit"
@@ -160,7 +157,7 @@
                     </tbody>
                 </table>
             </div>
-            {{ $products->links() }}
+            {{ $agents->links() }}
         @endif
     </main>
 @endsection

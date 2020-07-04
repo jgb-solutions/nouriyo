@@ -15,11 +15,7 @@
      *
      * @var array
      */
-    protected $fillable = [
-      'email', 'password','limit','active','agent',
-      'admin', 'zip', 'city', 'state', 'country', 'phone', 'address',
-      'last_name', 'first_name'
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -38,7 +34,8 @@
     protected $casts = [
       'email_verified_at' => 'datetime',
       'admin' => 'boolean',
-      'agent' => 'boolean'
+      'agent' => 'boolean',
+      'active' => 'boolean',
     ];
 
     public function orders()
@@ -54,5 +51,10 @@
     public function scopeAgents($query)
     {
       return $query->whereAgent(1);
+    }
+
+    public function getFullNameAttribute()
+    {
+      return $this->first_name . ' ' . $this->last_name;
     }
   }

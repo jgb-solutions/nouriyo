@@ -14,6 +14,6 @@ class ProductsSeeder extends Seeder
     {
       DB::table('products')->delete();
 
-      factory(Product::class, 500)->create();
+      factory(Product::class, 100)->create();
     }
 }

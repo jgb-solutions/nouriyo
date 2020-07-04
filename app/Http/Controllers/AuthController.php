@@ -17,11 +17,11 @@ class AuthController extends Controller
         'password' => 'required|min:6'
       ]);
 
-      if (Auth::attempt($credentials)) {
+      if (Auth::attempt($credentials, true)) {
         return redirect(route('dashboard.index'));
       }
 
-      return redirect(route('auth.login'));
+      return redirect(route('auth.getLoginForm'));
     }
 
     public function logout()

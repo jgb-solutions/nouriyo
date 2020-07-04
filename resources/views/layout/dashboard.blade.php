@@ -137,7 +137,7 @@
     </form>
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="{{route('auth.logout')}}">Log Out</a>
+            <a class="btn btn-secondary" href="{{route('auth.logout')}}">Log Out</a>
         </li>
     </ul>
 </nav>

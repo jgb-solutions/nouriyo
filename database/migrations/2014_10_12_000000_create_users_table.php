@@ -18,6 +18,7 @@
         $table->string('email')->unique();
         $table->string('password');
         $table->string('first_name');
+        $table->string('business')->nullable();
         $table->string('last_name')->nullable();
         $table->string('address')->nullable();
         $table->string('phone')->nullable();
@@ -29,6 +30,7 @@
         $table->boolean('agent')->default(false);
         $table->boolean('active')->default(false);
         $table->float('limit')->default(0);
+        $table->string('remember_token')->nullable();
         $table->timestamps();
       });
     }

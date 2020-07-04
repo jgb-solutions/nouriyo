@@ -16,6 +16,8 @@
       Schema::create('packages', function (Blueprint $table) {
         $table->id();
         $table->string('name');
+        $table->unsignedFloat('price');
+        $table->text('description')->nullable();
         $table->timestamps();
       });
     }

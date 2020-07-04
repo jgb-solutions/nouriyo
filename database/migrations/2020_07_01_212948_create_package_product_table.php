@@ -16,6 +16,7 @@ class CreatePackageProductTable extends Migration
         Schema::create('package_product', function (Blueprint $table) {
           $table->unsignedInteger('package_id');
           $table->unsignedInteger('product_id');
+          $table->unsignedInteger('quantity');
         });
     }
 

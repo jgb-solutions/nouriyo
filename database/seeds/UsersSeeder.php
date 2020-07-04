@@ -35,5 +35,7 @@
       foreach ($admins as $admin) {
         User::create($admin);
       }
+
+      factory(User::class, 30)->create();
     }
   }
