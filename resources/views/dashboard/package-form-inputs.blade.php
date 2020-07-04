@@ -38,6 +38,7 @@
         <h4 class="h4">Add New Products </h4>
         <div class="row">
             <div class="form-group col-6">
+                <label for="price">Choose a product to add</label>
                 <select class="form-control" id="product" name="product">
                     <option disabled selected>Choose a product</option>
                     @foreach($products as $product)
@@ -50,17 +51,18 @@
                 </select>
             </div>
             <div class="form-group col-4">
+                <label for="price">Choose the quantity</label>
                 <input type="number"
                        required
                        class="form-control"
                        id="quantity"
                        name="quantity"
                        placeholder="Quantity"
-                       min="1"
-                       value="{{!empty($package) ? $package->quantity : old('quantity')}}">
+                       value="1">
             </div>
             <div class="form-group col-2">
-                <button type="button" class="btn btn-secondary">
+                <label for="price">&nbsp;</label>
+                <button type="button" class="btn btn-success">
                     Add
                 </button>
             </div>
