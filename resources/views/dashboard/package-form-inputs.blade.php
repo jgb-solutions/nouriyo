@@ -1,3 +1,9 @@
+<script>
+    window.products = {!! $products->map(function($product){
+        return ['id' => $product->id, 'name' => $product->name];
+        })->toJson() !!}
+</script>
+
 <div class="row">
     <div class="form-group col-12">
         <label for="name">Name <b>*</b></label>
@@ -31,23 +37,50 @@
     </div>
 
     <div class="form-group col-12">
-        <hr />
+        <hr/>
     </div>
 
-    <div class="col-12">
+    <div class="col-12" x-data="{ products: window.products, chosenProducts: [], newProduct: '', quantity: 1 }">
         <h4 class="h4">Add New Products </h4>
+        <div class="list-group w-100">
+            <template x-for="(product, index) in chosenProducts" :key="index">
+                <div class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">Name: <b x-text="product.name"></b></h5>
+                        <button
+                                type="button"
+                                class="btn btn-danger btn-sm"
+                                @click="
+                                    if (chosenProducts.length == 1) {
+                                        chosenProducts = []
+                                        products = window.products
+                                    } else {
+                                        chosenProducts = chosenProducts.filter(p => p.id != product.id)
+                                        chosenProductIds = chosenProducts.map(p => p.id)
+
+                                        products = window.products.filter(p => !chosenProductIds.includes(p.id))
+                                    }
+                                "
+                        >X
+                        </button>
+                    </div>
+                    <h6 class="mb-1">Quantity: <b x-text="product.quantity"></b></h6>
+                    <input type="hidden" :name="`products[${index}][${product.id}]`" :value="product.quantity"/>
+                </div>
+            </template>
+        </div>
         <div class="row">
             <div class="form-group col-6">
                 <label for="price">Choose a product to add</label>
-                <select class="form-control" id="product" name="product">
-                    <option disabled selected>Choose a product</option>
-                    @foreach($products as $product)
+                <select class="form-control" id="product" name="product" x-model="newProduct">
+                    <template x-for="(product, index) in [{id: 0, name: 'Choose a product'},...products]" :key="index">
                         <option
-                                value="{{$product->id}}"
-                                {{ !empty($package) &&
-                                        ($package->product == $product || old('product') == $product) ? 'selected' : ''}}
-                        >{{$product->name}}</option>
-                    @endforeach
+                                :disabled="index == 0"
+                                :value="product.id"
+                                x-text="product.name"
+                                :selected="product.id == newProduct || index == 0"
+                        ></option>
+                    </template>
                 </select>
             </div>
             <div class="form-group col-4">
@@ -58,11 +91,26 @@
                        id="quantity"
                        name="quantity"
                        placeholder="Quantity"
-                       value="1">
+                       x-model="quantity"
+                >
             </div>
             <div class="form-group col-2">
                 <label for="price">&nbsp;</label>
-                <button type="button" class="btn btn-success">
+                <button type="button" class="btn btn-success"
+                        @click="
+                            product = products.find(p => newProduct == p.id)
+
+                            if (product) {
+                                chosenProducts.push({...product, quantity})
+                                products = [...products.filter(p => p.id != newProduct)]
+                                console.log(products)
+                                newProduct = 0
+                                quantity = 1
+                            }
+
+                            return
+                        "
+                >
                     Add
                 </button>
             </div>
@@ -70,6 +118,6 @@
     </div>
 
     <div class="form-group col-12">
-        <hr />
+        <hr/>
     </div>
 </div>

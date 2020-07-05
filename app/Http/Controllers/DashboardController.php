@@ -104,15 +104,26 @@
     {
       return view('dashboard.packages', [
         'packages' => Package::with('products')->latest()->paginate(20),
-        'products' => Product::orderBy('name', 'asc')->get()
+        'products' => Product::orderBy('name', 'asc')->get(),
       ]);
     }
 
     public function add_package(Request $request)
     {
-      $data = $this->validate_package($request);
+      $this->validate_package($request);
 
-      Package::create($data);
+      $data = $request->only([
+        'name',
+        'price',
+        'description',
+        'products'
+      ]);
+
+      if ($request->has('products')) {
+        $data['products'] = $request->products;
+      }
+
+      Package::create($package_data);
 
       flash('New package added!')->overlay()->success();
 
@@ -149,27 +160,11 @@
 
     private function validate_package(Request $request)
     {
-      $this->validate($request, [
-        'name' => 'required|unique:products',
-        'buying_price' => 'required|min:0',
-        'selling_price' => 'required',
-        'quantity' => 'required|numeric',
-        'image' => 'image',
+      return $this->validate($request, [
+        //'name' => 'required|unique:packages',
+        'name' => 'required',
+        'price' => 'required',
       ]);
-
-      $data = $request->only([
-        'name',
-        'buying_price',
-        'selling_price',
-        'quantity',
-        'description',
-      ]);
-
-      if ($request->hasFile('image')) {
-        $data['image'] = $request->file('image')->store('images');
-      }
-
-      return $data;
     }
 
     // Agents
