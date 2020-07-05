@@ -26,6 +26,12 @@
     </li>
 
     <li class="nav-item">
+        <a class="nav-link {{request()->route()->getName() == 'dashboard.beneficiaries' ? 'active' : ''}}" href="{{route('dashboard.beneficiaries')}}">
+            Beneficiaries
+        </a>
+    </li>
+
+    <li class="nav-item">
         <a class="nav-link {{request()->route()->getName() == 'dashboard.reports' ? 'active' : ''}}" href="{{route('dashboard.reports')}}">
             Reports
         </a>

@@ -17,7 +17,7 @@
         $table->id();
         $table->string('number', 10);
         $table->enum('state', ['processing', 'ready', 'delivered']);
-        $table->unsignedInteger('user_id');
+        $table->unsignedInteger('client_id');
         $table->string("receipt");
         $table->timestamps();
       });

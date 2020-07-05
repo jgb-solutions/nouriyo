@@ -10,7 +10,7 @@ class Product extends Model
 
   public function packages()
   {
-    return $this->belongsToMany(Package::class);
+    return $this->belongsToMany(Package::class)->withPivot('quantity');
   }
 
   public function orders()

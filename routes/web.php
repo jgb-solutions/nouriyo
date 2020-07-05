@@ -24,6 +24,18 @@ Route::middleware(['auth'])->group(function() {
     Route::put('/agents/{agent}', 'DashboardController@update_agent')->name('update-agent');
     Route::delete('/agents/{agent}', 'DashboardController@delete_agent')->name('delete-agent');
 
+    // Clients
+    Route::get('/clients', 'DashboardController@clients')->name('clients');
+    Route::post('/clients', 'DashboardController@add_client')->name('add-clients');
+    Route::put('/clients/{client}', 'DashboardController@update_client')->name('update-client');
+    Route::delete('/clients/{client}', 'DashboardController@delete_client')->name('delete-client');
+
+    // Beneficiaries
+    Route::get('/beneficiaries', 'DashboardController@beneficiaries')->name('beneficiaries');
+    Route::post('/beneficiaries', 'DashboardController@add_beneficiary')->name('add-beneficiaries');
+    Route::put('/beneficiaries/{beneficiary}', 'DashboardController@update_beneficiary')->name('update-beneficiary');
+    Route::delete('/beneficiaries/{beneficiary}', 'DashboardController@delete_beneficiary')->name('delete-beneficiary');
+
     // Admins
     Route::get('/admins', 'DashboardController@admins')->name('admins');
     Route::post('/admins', 'DashboardController@add_admin')->name('add-admins');
@@ -36,9 +48,6 @@ Route::middleware(['auth'])->group(function() {
     Route::put('/packages/{package}', 'DashboardController@update_package')->name('update-package');
     Route::delete('/packages/{package}', 'DashboardController@delete_package')->name('delete-package');
 
-    Route::get('/clients', 'DashboardController@clients')->name('clients');
-    Route::get('/agents', 'DashboardController@agents')->name('agents');
-    Route::get('/beneficiaries', 'DashboardController@beneficiaries')->name('beneficiaries');
     Route::get('/reports', 'DashboardController@reports')->name('reports');
   });
 

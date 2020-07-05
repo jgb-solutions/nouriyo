@@ -1,7 +1,15 @@
 <script>
-    window.products = {!! $products->map(function($product){
+    window.products = {!! $products->map(function($product) {
         return ['id' => $product->id, 'name' => $product->name];
-        })->toJson() !!}
+    })->toJson() !!}
+
+    {!! !empty($package) ? 'window.chosenProducts_' . $package->id . ' = ' . $package->products->map(function($product) {
+        return [
+            'id' => $product->id,
+            'name' => $product->name,
+            'quantity' => $product->pivot->quantity
+        ];
+    })->toJson() : '' !!}
 </script>
 
 <div class="row">
@@ -40,7 +48,18 @@
         <hr/>
     </div>
 
-    <div class="col-12" x-data="{ products: window.products, chosenProducts: [], newProduct: '', quantity: 1 }">
+    <div class="col-12" x-data="{
+        products: window.products,
+        chosenProducts: {!! !empty($package) ? 'window.chosenProducts_' . $package->id : '[]' !!},
+        newProduct: '',
+        quantity: 1
+    }"
+         x-init="
+            chosenProductIds = chosenProducts.map(p => p.id)
+
+            products = window.products.filter(p => !chosenProductIds.includes(p.id))
+        "
+    >
         <h4 class="h4">Add New Products </h4>
         <div class="list-group w-100">
             <template x-for="(product, index) in chosenProducts" :key="index">
@@ -51,15 +70,10 @@
                                 type="button"
                                 class="btn btn-danger btn-sm"
                                 @click="
-                                    if (chosenProducts.length == 1) {
-                                        chosenProducts = []
-                                        products = window.products
-                                    } else {
-                                        chosenProducts = chosenProducts.filter(p => p.id != product.id)
-                                        chosenProductIds = chosenProducts.map(p => p.id)
+                                    chosenProducts = chosenProducts.filter(p => p.id != product.id)
+                                    chosenProductIds = chosenProducts.map(p => p.id)
 
-                                        products = window.products.filter(p => !chosenProductIds.includes(p.id))
-                                    }
+                                    products = window.products.filter(p => !chosenProductIds.includes(p.id))
                                 "
                         >X
                         </button>
@@ -86,6 +100,7 @@
             <div class="form-group col-4">
                 <label for="price">Choose the quantity</label>
                 <input type="number"
+                       min="1"
                        required
                        class="form-control"
                        id="quantity"
@@ -103,7 +118,6 @@
                             if (product) {
                                 chosenProducts.push({...product, quantity})
                                 products = [...products.filter(p => p.id != newProduct)]
-                                console.log(products)
                                 newProduct = 0
                                 quantity = 1
                             }
