@@ -22,4 +22,9 @@ class Product extends Model
   {
     return asset($this->image);
   }
+
+  public function scopeRand($query)
+  {
+    $query->orderByRaw('RAND()');
+  }
 }

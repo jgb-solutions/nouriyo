@@ -48,6 +48,8 @@
                     <tr>
                         <th>Full Name</th>
                         <th>Phone</th>
+                        <th>Address</th>
+                        <th>Orders</th>
                         @if(auth()->user()->admin)
                             <th>Edit</th>
                             <th>Delete</th>
@@ -92,6 +94,8 @@
                                 </div>
                             </td>
                             <td>{{$beneficiary->phone}}</td>
+                            <td>{{$beneficiary->address}}</td>
+                            <td>{{$beneficiary->orders_count}}</td>
                             @if(auth()->user()->admin)
                                 <td>
                                     <button type="button" class="btn btn-primary" data-toggle="modal"

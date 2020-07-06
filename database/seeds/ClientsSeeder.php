@@ -1,9 +1,11 @@
 <?php
 
-use Illuminate\Database\Seeder;
+  use Illuminate\Database\Seeder;
 
-class ClientsSeeder extends Seeder
-{
+  use App\Models\Client;
+
+  class ClientsSeeder extends Seeder
+  {
     /**
      * Run the database seeds.
      *
@@ -11,6 +13,8 @@ class ClientsSeeder extends Seeder
      */
     public function run()
     {
-        //
+      DB::table('clients')->delete();
+
+      factory(Client::class, 100)->create();
     }
-}
+  }
