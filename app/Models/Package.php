@@ -17,4 +17,9 @@
     {
       $this->belongsToMany(Order::class, 'order_details');
     }
+
+    public function getImageUrlAttribute()
+    {
+      return asset($this->products()->first()->image);
+    }
   }

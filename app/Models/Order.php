@@ -16,11 +16,13 @@
     public function products()
     {
       return $this->belongsToMany(Product::class, 'order_details');
+//        ->wherePivot('type', 'product');
     }
 
     public function packages()
     {
       return $this->belongsToMany(Package::class, 'order_details');
+//          ->wherePivot('type', 'package');
     }
 
     public function beneficiaries()

@@ -16,7 +16,7 @@
       Schema::create('orders', function (Blueprint $table) {
         $table->id();
         $table->string('number', 10);
-        $table->enum('state', ['processing', 'ready', 'delivered']);
+        $table->enum('state', ['processing', 'ready', 'delivering', 'delivered']);
         $table->unsignedInteger('client_id');
         $table->string("receipt");
         $table->timestamps();
