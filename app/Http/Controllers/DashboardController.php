@@ -3,6 +3,7 @@
   namespace App\Http\Controllers;
 
   use App\Models\Beneficiary;
+  use App\Models\Order;
   use App\Models\Product;
   use App\Models\Package;
   use App\Models\User;
@@ -11,6 +12,8 @@
 
   class DashboardController extends Controller
   {
+    public $order_states = ['processing', 'ready', 'delivering', 'delivered'];
+
     public function index(Request $request)
     {
       $connect_user = auth()->user();
@@ -22,11 +25,6 @@
       }
 
       return view('dashboard.index');
-    }
-
-    public function orders()
-    {
-      return view('dashboard.orders');
     }
 
     // Products
@@ -106,9 +104,9 @@
     {
       return view('dashboard.packages', [
         'packages' => Package::with('products')
-                        ->withCount('products')
-                        ->latest()
-                        ->paginate(20),
+          ->withCount('products')
+          ->latest()
+          ->paginate(20),
         'products' => Product::orderBy('name', 'asc')->get(),
       ]);
     }
@@ -184,6 +182,132 @@
 
       return $request->only(['name', 'price', 'description']);
     }
+
+
+    // Orders
+    public function orders()
+    {
+      return view('dashboard.orders', [
+        'orders' => Order::with(['products', 'packages', 'client', 'beneficiary'])
+          ->withCount(['products', 'packages'])
+          ->latest()
+          ->paginate(20),
+        'products' => Product::orderBy('name', 'asc')->get(),
+        'packages' => Package::orderBy('name', 'asc')->get(),
+        'order_states' => $this->order_states,
+        'clients' => Client::latest()->take(20)->get(),
+        'beneficiaries' => Beneficiary::latest()->take(20)->get(),
+      ]);
+    }
+
+    public function add_order(Request $request)
+    {
+      $data = $this->validate_order($request);
+
+      $order                 = new Order();
+      $order->number         = Order::getNumber();
+      $order->state          = 'processing';
+      $order->client_id      = $data['client_id'];
+      $order->beneficiary_id = $data['beneficiary_id'];
+
+      if ($request->hasFile('receipt')) {
+        $order->receipt = $request->file('receipt')->store('receipts');
+      }
+
+      $order->save();
+
+      $this->syncProductsAndPackagesToOrder($order, $request);
+
+      flash('New order added!')->overlay()->success();
+
+      return redirect(route('dashboard.orders'));
+    }
+
+    public function update_order(Request $request, Order $order)
+    {
+      if (auth()->user()->admin) {
+        $data = $this->validate_order($request);
+
+        $order->update($data);
+
+        if ($request->hasFile('receipt')) {
+          $order->receipt = $request->file('receipt')->store('receipts');
+        }
+
+        if (
+          $request->state != 'delivered' ||
+          ($request->state == 'delivered' && $request->hasFile('receipt'))
+        ) {
+          $order->state = $request->state;
+        }
+
+        $order->save();
+
+        $this->syncProductsAndPackagesToOrder($order, $request);
+
+        flash('Order updated!')->overlay()->success();
+      } else {
+        flash('Error deleting the order!')->error();
+      }
+
+
+      return redirect(route('dashboard.orders'));
+    }
+
+    private function syncProductsAndPackagesToOrder(Order $order, Request $request)
+    {
+      if ($request->has('products')) {
+        $products = [];
+
+        foreach ($request->products as $key => $value) {
+          foreach ($value as $id => $quantity) {
+            $products[$id] = ['quantity' => $quantity, 'type' => 'product'];
+          }
+        }
+
+        $order->products()->sync($products);
+      } else {
+        $order->products()->detach();
+      }
+
+      if ($request->has('packages')) {
+        $packages = [];
+
+        foreach ($request->packages as $key => $value) {
+          foreach ($value as $id => $quantity) {
+            $packages[$id] = ['quantity' => $quantity, 'type' => 'package'];
+          }
+        }
+
+        $order->packages()->sync($packages);
+      } else {
+        $order->packages()->detach();
+      }
+    }
+
+    public function delete_order(Order $order)
+    {
+      if (auth()->user()->admin) {
+        $order->products()->detach();
+        $order->packages()->detach();
+
+        $order->delete();
+        flash('Package updated!')->success();
+      } else {
+        flash('Error deleting the order!')->error();
+      }
+
+      return redirect(route('dashboard.orders'));
+    }
+
+    private function validate_order(Request $request)
+    {
+      return $this->validate($request, [
+        'client_id' => 'required',
+        'beneficiary_id' => 'required',
+      ]);
+    }
+
 
     // Agents
     public function agents()

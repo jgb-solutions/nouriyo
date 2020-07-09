@@ -18,7 +18,8 @@
         $table->string('number', 10);
         $table->enum('state', ['processing', 'ready', 'delivering', 'delivered']);
         $table->unsignedInteger('client_id');
-        $table->string("receipt");
+        $table->unsignedInteger('beneficiary_id');
+        $table->string("receipt")->nullable();
         $table->timestamps();
       });
     }

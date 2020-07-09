@@ -15,12 +15,10 @@
     {
       Schema::create('order_details', function (Blueprint $table) {
         $table->unsignedInteger('order_id');
-        $table->unsignedInteger('beneficiary_id');
         $table->unsignedInteger('product_id')->nullable();
         $table->unsignedInteger('package_id')->nullable();
         $table->unsignedInteger('quantity');
         $table->enum('type', ['package', 'product']);
-        $table->timestamps();
       });
     }
 

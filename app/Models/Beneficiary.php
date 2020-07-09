@@ -10,7 +10,12 @@
 
     public function orders()
     {
-      return $this->belongsToMany(Order::class, 'order_details');
+      return $this->hasMany(Order::class);
+    }
+
+    public function clients()
+    {
+      return $this->hasManyThrough(Client::class, Order::class);
     }
 
     public function getFullNameAttribute()

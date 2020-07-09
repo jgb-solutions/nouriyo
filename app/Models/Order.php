@@ -10,32 +10,37 @@
 
     public function client()
     {
-      return $this->belongsTo(User::class, 'order_details');
+      return $this->belongsTo(Client::class);
     }
 
     public function products()
     {
-      return $this->belongsToMany(Product::class, 'order_details');
+      return $this->belongsToMany(Product::class, 'order_details')->withPivot('quantity');
 //        ->wherePivot('type', 'product');
     }
 
     public function packages()
     {
-      return $this->belongsToMany(Package::class, 'order_details');
+      return $this->belongsToMany(Package::class, 'order_details')->withPivot('quantity');
 //          ->wherePivot('type', 'package');
     }
 
-    public function beneficiaries()
+    public function beneficiary()
     {
-      return $this->belongsToMany(Beneficiary::class, 'order_details');
+      return $this->belongsTo(Beneficiary::class);
     }
 
-    public static function getHash()
+    public static function getNumber()
     {
       do {
-        $hash = rand(0000000000, 9999999999);
-      } while (static::whereHash($hash)->first());
+        $number = rand(0000000000, 9999999999);
+      } while (static::whereNumber($number)->first());
 
-      return $hash;
+      return $number;
+    }
+
+    public function getTotalAttribute()
+    {
+      return $this->products()->sum('selling_price') + $this->packages()->sum('price');
     }
   }
