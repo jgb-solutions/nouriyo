@@ -81,8 +81,13 @@
 <div class="form-container">
     <form class="form-signin" method="post" action="{{route('auth.doLogin')}}">
         @csrf
-        <h2 class="h2 mb-3 text-center text-uppercase">{{config('app.name')}}</h2>
-        {{--<h3 class="h3 mb-3 font-weight-normal">Please sign in</h3>--}}
+        <h2 class="h2 mb-3 text-center text-uppercase">
+            <img
+                    src="{{asset('assets/images/logo.png')}}"
+                    alt="{{config('app.name')}}"
+                    class="img-fluid"
+            />
+        </h2>
         <label
                 for="email"
                 class="sr-only">

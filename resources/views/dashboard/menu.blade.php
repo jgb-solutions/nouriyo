@@ -1,4 +1,4 @@
-<ul class="nav flex-column">
+<ul class="nav flex-column mt-4">
     <li class="nav-item">
         <a class="nav-link {{request()->route()->getName() == 'dashboard.index' ? 'active' : ''}}" href="{{route('dashboard.index')}}">
             Dashboard
