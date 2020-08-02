@@ -71,19 +71,78 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title"
-                                                    id="showOrderModalLabel">{{$order->name}}</h5>
+                                                    id="showOrderModalLabel">Details for order number
+                                                    <b>{{$order->number}}</b></h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <div><img height="200" src="{{$order->image_url}}"/></div>
-                                                <p>
-                                                    {{$order->description}}
-                                                </p>
-                                            </div>
+                                                <div class="list-group w-100">
+                                                    <div class="list-group-item disabled active">Client</div>
+                                                    <div class="list-group-item list-group-item-action">
+                                                        <h5 class="mb-1">Name: <b>{{$order->client->fullName}}</b></h5>
+                                                        <h5 class="mb-1">Phone: <b>{{$order->client->phone}}</b></h5>
+                                                    </div>
+                                                </div>
+                                                <div class="list-group w-100">
+                                                    <div class="list-group-item disabled active">Beneficiary</div>
+                                                    <div class="list-group-item list-group-item-action">
+                                                        <h5 class="mb-1">Name: <b>{{$order->beneficiary->fullName}}</b>
+                                                        </h5>
+                                                        <h5 class="mb-1">Phone: <b>{{$order->beneficiary->phone}}</b>
+                                                        </h5>
+                                                        <h5 class="mb-1">Address:
+                                                            <b>{{$order->beneficiary->address}}</b></h5>
+                                                    </div>
+                                                </div>
 
+                                                <div class="list-group w-100">
+                                                    <div class="list-group-item disabled active">State</div>
+                                                    <div class="list-group-item list-group-item-action">
+                                                        <h5 class="mb-1">Current State:
+                                                            <b>{{ucfirst($order->state)}}</b></h5>
+                                                    </div>
+                                                </div>
+
+                                                <div class="list-group w-100">
+                                                    <div class="list-group-item disabled active">Receipt</div>
+                                                    <div class="list-group-item list-group-item-action">
+                                                        @if($order->receipt)
+                                                            <img
+                                                                    height="200"
+                                                                    src="{{ $order->receipt_url }}"
+                                                            />
+                                                        @else
+                                                            <h5 class="mb-1">This order has no receipt yet</h5>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+                                                <div class="list-group w-100">
+                                                    <div class="list-group-item disabled active">Products</div>
+                                                    @foreach($order->products as $product)
+                                                        <div class="list-group-item list-group-item-action">
+                                                            <h5 class="mb-1">Name: <b>{{$product->name}}</b></h5>
+                                                            <h6 class="mb-1">Quantity: <b>{{$order->products_count}}</b>
+                                                            </h6>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+
+                                                {{--Packages--}}
+                                                <div class="list-group w-100">
+                                                    <div class="list-group-item disabled active">Packages</div>
+                                                    @foreach($order->packages as $package)
+                                                        <div class="list-group-item list-group-item-action">
+                                                            <h5 class="mb-1">Name: <b>{{$package->name}}</b></h5>
+                                                            <h6 class="mb-1">Quantity: <b>{{$order->packages_count}}</b>
+                                                            </h6>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                                     Close

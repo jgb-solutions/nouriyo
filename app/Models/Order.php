@@ -43,4 +43,9 @@
     {
       return $this->products()->sum('selling_price') + $this->packages()->sum('price');
     }
+
+    public function getReceiptUrlAttribute()
+    {
+      return asset($this->receipt);
+    }
   }
