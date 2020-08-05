@@ -30,6 +30,13 @@
           'password' => bcrypt('password'),
           'admin' => true,
         ],
+        [
+          'first_name' => 'Wenderson',
+          'last_name' => 'Beauchamps',
+          'email' => 'wendersonbeauchamps@yahoo.fr',
+          'password' => bcrypt('password'),
+          'admin' => true,
+        ],
       ];
 
       foreach ($admins as $admin) {
