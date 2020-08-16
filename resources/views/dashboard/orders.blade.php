@@ -49,9 +49,11 @@
                         <th>Number</th>
                         <th>Client</th>
                         <th>Benefiary</th>
+                        <th>Transport Fee</th>
+                        <th>Service Fee</th>
                         <th>Total</th>
+                        <th>Edit</th>
                         @if(auth()->user()->admin)
-                            <th>Edit</th>
                             <th>Delete</th>
                         @endif
                     </tr>
@@ -71,16 +73,21 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="showOrderModalLabel">
-                                                    Details for order number <b>{{$order->number}}</b>
+                                                    Details for order number: <b>{{$order->number}}</b>
                                                     <br/>
-                                                    Taken by <b>{{$order->agentWhoTookTheOrder->fullName}}</b>
+                                                    Taken by: <b>{{$order->agentWhoTookTheOrder->fullName}}</b>
                                                     <small>({{$order->agentWhoTookTheOrder->business}})</small>
 
                                                     @if ($order->agentWhoDeliveredTheOrder)
                                                         <br/>
-                                                        Delivered by <b>{{$order->agentWhoDeliveredTheOrder->fullName}}</b>
+                                                        Delivered by:
+                                                        <b>{{$order->agentWhoDeliveredTheOrder->fullName}}</b>
                                                         <small>({{$order->agentWhoDeliveredTheOrder->business}})</small>
                                                     @endif
+
+                                                    <br/>
+                                                    Total Without Fees: <b>{{$order->total}}</b> <br/>
+                                                    Total With Fees: <b>{{$order->total + $order->transport_fee + $order->service_fee}}</b>
                                                 </h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
@@ -104,6 +111,13 @@
                                                         </h5>
                                                         <h5 class="mb-1">Address:
                                                             <b>{{$order->beneficiary->address}}</b></h5>
+                                                    </div>
+                                                </div>
+                                                <div class="list-group w-100">
+                                                    <div class="list-group-item disabled active">Fees</div>
+                                                    <div class="list-group-item list-group-item-action">
+                                                        <h5 class="mb-1">Transport Fee: <b>{{$order->transport_fee}} dollars</b></h5>
+                                                        <h5 class="mb-1">Service Fee: <b>{{$order->service_fee}} dollars</b></h5>
                                                     </div>
                                                 </div>
 
@@ -163,47 +177,49 @@
                             </td>
                             <td>{{$order->client->fullName}}</td>
                             <td>{{$order->beneficiary->fullName}}</td>
-                            <td>{{$order->total}}</td>
-                            @if(auth()->user()->admin)
-                                <td>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#editOrderModal-{{$order->id}}">Edit
-                                    </button>
-                                    <div class="modal fade" id="editOrderModal-{{$order->id}}" tabindex="-1"
-                                         role="dialog"
-                                         aria-labelledby="editOrderModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="editOrderModalLabel">
-                                                        Edit {{$order->name}}</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form method="post"
-                                                          action="{{route('dashboard.update-order', $order->id)}}"
-                                                          enctype="multipart/form-data">
-                                                        @method("put")
-                                                        @csrf
+                            <td>{{$order->transport_fee}} dollars</td>
+                            <td>{{$order->service_fee}} dollars</td>
+                            <td>{{$order->total}} dollars</td>
+                            <td>
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#editOrderModal-{{$order->id}}">Edit
+                                </button>
+                                <div class="modal fade" id="editOrderModal-{{$order->id}}" tabindex="-1"
+                                     role="dialog"
+                                     aria-labelledby="editOrderModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editOrderModalLabel">
+                                                    Edit {{$order->name}}</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post"
+                                                      action="{{route('dashboard.update-order', $order->id)}}"
+                                                      enctype="multipart/form-data">
+                                                    @method("put")
+                                                    @csrf
 
-                                                        @include('dashboard.order-form-inputs', ['order' => $order])
-                                                        <button type="submit" class="btn btn-primary">Update</button>
-                                                    </form>
-                                                </div>
+                                                    @include('dashboard.order-form-inputs', ['order' => $order])
+                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                </form>
+                                            </div>
 
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">
-                                                        Close
-                                                    </button>
-                                                </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">
+                                                    Close
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
-                                </td>
+                                </div>
+                            </td>
+                            @if(auth()->user()->admin)
                                 <td>
                                     <form method="post" action="{{route('dashboard.delete-order', $order->id)}}">
                                         @method("delete")

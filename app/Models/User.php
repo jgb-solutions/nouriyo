@@ -38,11 +38,6 @@
       'active' => 'boolean',
     ];
 
-    public function orders()
-    {
-      return $this->hasMany(Order::class);
-    }
-
     public function ordersTaken()
     {
       return $this->hasMany(Order::class, 'taken_by');
@@ -66,5 +61,13 @@
     public function getFullNameAttribute()
     {
       return $this->first_name . ' ' . $this->last_name;
+    }
+
+    public function getCanTakeOrdersAttribute() {
+        $total_orders_sum = $this->ordersDelivered->reduce(function ($value, $ordersDelivered) {
+          return $value + $ordersDelivered->total;
+        }, 0);
+
+        return $this->limit > $total_orders_sum;
     }
   }

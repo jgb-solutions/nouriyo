@@ -8,6 +8,7 @@
   use App\Models\Package;
   use App\Models\User;
   use App\Models\Client;
+  use App\Models\Setting;
   use Illuminate\Http\Request;
 
   class DashboardController extends Controller
@@ -21,7 +22,15 @@
       if ($connect_user->admin) {
         // prepare data for an admin
       } else {
-        // prepare data for an agent
+        $user = auth()->user();
+
+        if ($user->active && $user->canTakeOrders) {
+          return redirect(route('dashboard.orders'));
+        } else {
+          auth()->logout();
+
+          return view('suspended');
+        }
       }
 
       return view('dashboard.index');
@@ -208,31 +217,44 @@
 
     public function add_order(Request $request)
     {
-      $data = $this->validate_order($request);
 
-      $order                 = new Order();
-      $order->number         = Order::getNumber();
-      $order->state          = 'processing';
-      $order->client_id      = $data['client_id'];
-      $order->beneficiary_id = $data['beneficiary_id'];
-      $order->taken_by       = auth()->user()->id;
+      $user = auth()->user();
 
-      if ($request->hasFile('receipt')) {
-        $order->receipt = $request->file('receipt')->store('receipts');
+      if ($user->admin || $user->active || $user->canTakeOrders) {
+        $data = $this->validate_order($request);
+
+        $settings = Setting::first();
+
+        $order                 = new Order();
+        $order->number         = Order::getNumber();
+        $order->state          = 'processing';
+        $order->client_id      = $data['client_id'];
+        $order->beneficiary_id = $data['beneficiary_id'];
+        $order->taken_by       = auth()->user()->id;
+        $order->transport_fee = $settings->transport_fee;
+        $order->service_fee = $settings->service_fee;
+
+        if ($request->hasFile('receipt')) {
+          $order->receipt = $request->file('receipt')->store('receipts');
+        }
+
+        $order->save();
+
+        $this->syncProductsAndPackagesToOrder($order, $request);
+
+        flash('New order added!')->overlay()->success();
+
+        return redirect(route('dashboard.orders'));
+      } else {
+        flash('Error creating the order!')->error();
       }
-
-      $order->save();
-
-      $this->syncProductsAndPackagesToOrder($order, $request);
-
-      flash('New order added!')->overlay()->success();
-
-      return redirect(route('dashboard.orders'));
     }
 
     public function update_order(Request $request, Order $order)
     {
-      if (auth()->user()->admin) {
+      $user = auth()->user();
+
+      if ($user->admin || $user->active || $user->canTakeOrders) {
         $data = $this->validate_order($request);
 
         $order->update($data);
@@ -278,7 +300,7 @@
             $product_to = Product::find($id);
 
             if ($product_to) {
-              $product_to->quantity = $product_to->quantity - (int) $quantity;
+              $product_to->quantity = $product_to->quantity - (int)$quantity;
               $product_to->save();
             }
           }
@@ -304,7 +326,7 @@
             $package_to = Package::find($id);
 
             if ($package_to) {
-              $package_to->quantity = $package_to->quantity - (int) $quantity;
+              $package_to->quantity = $package_to->quantity - (int)$quantity;
               $package_to->save();
             }
           }
@@ -360,7 +382,11 @@
     public function agents()
     {
       return view('dashboard.agents', [
-        'agents' => User::latest()->agents()->paginate(20),
+        'agents' => User::latest()
+            ->agents()
+            ->with(['ordersTaken', 'ordersDelivered'])
+            ->withCount(['ordersTaken', 'ordersDelivered'])
+            ->paginate(20),
         'countries' => ["Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegowina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, the Democratic Republic of the", "Cook Islands", "Costa Rica", "Cote d'Ivoire", "Croatia (Hrvatska)", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "France Metropolitan", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard and Mc Donald Islands", "Holy See (Vatican City State)", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran (Islamic Republic of)", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People's Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan", "Lao, People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia, The Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia (Slovak Republic)", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "Spain", "Sri Lanka", "St. Helena", "St. Pierre and Miquelon", "Sudan", "Suriname", "Svalbard and Jan Mayen Islands", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan, Province of China", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands (British)", "Virgin Islands (U.S.)", "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe"],
       ]);
     }
@@ -643,8 +669,22 @@
       return $data;
     }
 
-    public function reports()
+    public function settings()
     {
-      return view('dashboard.reports');
+      return view('dashboard.settings', [
+        'settings' => Setting::first()
+      ]);
+    }
+
+    public function update_settings(Request $request, Setting $settings)
+    {
+      if (auth()->user()->admin) {
+        $settings->update($request->all());
+        flash('Settings updated!')->overlay()->success();
+      } else {
+        flash('Error deleting the settings!')->error();
+      }
+
+      return redirect(route('dashboard.settings'));
     }
   }

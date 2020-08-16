@@ -74,17 +74,39 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title"
-                                                    id="showAgentModalLabel">{{$agent->fullName}}</h5>
+                                                    id="showAgentModalLabel">Agent's Details</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <div><img height="200" src="{{$agent->image_url}}"/></div>
-                                                <p>
-                                                    {{$agent->description}}
-                                                </p>
+                                                <div class="list-group w-100">
+                                                    <div class="list-group-item disabled active">Personal Info</div>
+                                                    <div class="list-group-item list-group-item-action">
+                                                        <h5 class="mb-1">Name: <b>{{$agent->fullName}}</b></h5>
+                                                        <h5 class="mb-1">Phone: <b>{{$agent->phone}}</b></h5>
+                                                        <h5 class="mb-1">Business: <b>{{$agent->business}}</b></h5>
+                                                        <h5 class="mb-1">Address: <b>{{$agent->address}}</b></h5>
+                                                        <h5 class="mb-1">Country: <b>{{$agent->country}}</b></h5>
+                                                        @if($agent->state)
+                                                            <h5 class="mb-1">State: <b>{{$agent->state}}</b></h5>
+                                                        @endif
+                                                        <h5 class="mb-1">City: <b>{{$agent->city}}</b></h5>
+                                                        <h5 class="mb-1">Limit: <b>{{$agent->limit}} Dollars</b></h5>
+                                                    </div>
+                                                </div>
+
+                                                <div class="list-group w-100">
+                                                    <div class="list-group-item disabled active">Orders Info</div>
+                                                    <div class="list-group-item list-group-item-action">
+                                                        <h5 class="mb-1">Number of Orders Taken:
+                                                            <b>{{$agent->orders_taken_count}}</b></h5>
+                                                        <h5 class="mb-1">Number of Orders Delivered:
+                                                            <b>{{$agent->orders_delivered_count}}</b></h5>
+                                                    </div>
+                                                </div>
+
                                             </div>
 
                                             <div class="modal-footer">

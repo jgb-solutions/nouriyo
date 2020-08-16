@@ -22,6 +22,8 @@
         $table->unsignedInteger('taken_by')->nullable();
         $table->unsignedInteger('delivered_by')->nullable();
         $table->string("receipt")->nullable();
+        $table->float('transport_fee');
+        $table->float('service_fee');
         $table->timestamps();
       });
     }

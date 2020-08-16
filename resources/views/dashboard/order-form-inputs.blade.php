@@ -1,6 +1,6 @@
 <script>
     window.products = {!! $products->map(function($product) {
-        return ['id' => $product->id, 'name' => $product->name];
+        return ['id' => $product->id, 'name' => $product->name, 'quantity_available' => $product->quantity];
     })->toJson() !!}
 
             {!! !empty($order) ? 'window.chosenProducts_' . $order->id . ' = ' . $order->products->map(function($product) {
@@ -14,7 +14,7 @@
             {{--Packages--}}
 
         window.packages = {!! $packages->map(function($package) {
-        return ['id' => $package->id, 'name' => $package->name];
+        return ['id' => $package->id, 'name' => $package->name, 'quantity_available' => $package->quantity];
     })->toJson() !!}
 
     {!! !empty($order) ? 'window.chosenPackages_' . $order->id . ' = ' . $order->packages->map(function($package) {

@@ -53,7 +53,8 @@
       Route::put('/orders/{order}', 'DashboardController@update_order')->name('update-order');
       Route::delete('/orders/{order}', 'DashboardController@delete_order')->name('delete-order');
 
-      Route::get('/reports', 'DashboardController@reports')->name('reports');
+      Route::get('/settings', 'DashboardController@settings')->name('settings');
+      Route::put('/settings/{settings}', 'DashboardController@update_settings')->name('update-settings');
     });
 
     Route::get('auth/logout', 'AuthController@logout')->name('auth.logout');
