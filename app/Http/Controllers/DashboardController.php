@@ -77,7 +77,8 @@
     private function validate_product(Request $request)
     {
       $this->validate($request, [
-        'name' => 'required|unique:products',
+//        'name' => 'required|unique:products',
+        'name' => 'required',
         'buying_price' => 'required|min:0',
         'selling_price' => 'required',
         'quantity' => 'required|numeric',
@@ -177,10 +178,15 @@
     {
       $this->validate($request, [
         'name' => 'required',
+        'package_quantity' => 'required|numeric',
         'price' => 'required',
       ]);
 
-      return $request->only(['name', 'price', 'description']);
+      $data = $request->only(['name', 'price', 'description']);
+
+      $data['quantity'] = $request->package_quantity;
+
+      return $data;
     }
 
 
@@ -209,6 +215,7 @@
       $order->state          = 'processing';
       $order->client_id      = $data['client_id'];
       $order->beneficiary_id = $data['beneficiary_id'];
+      $order->taken_by       = auth()->user()->id;
 
       if ($request->hasFile('receipt')) {
         $order->receipt = $request->file('receipt')->store('receipts');
@@ -239,6 +246,10 @@
           ($request->state == 'delivered' && $request->hasFile('receipt'))
         ) {
           $order->state = $request->state;
+
+          if ($order->state === 'delivered') {
+            $order->delivered_by = auth()->user()->id;
+          }
         }
 
         $order->save();
@@ -256,17 +267,30 @@
 
     private function syncProductsAndPackagesToOrder(Order $order, Request $request)
     {
+//      dd($request->all());
       if ($request->has('products')) {
         $products = [];
 
         foreach ($request->products as $key => $value) {
           foreach ($value as $id => $quantity) {
             $products[$id] = ['quantity' => $quantity, 'type' => 'product'];
+
+            $product_to = Product::find($id);
+
+            if ($product_to) {
+              $product_to->quantity = $product_to->quantity - (int) $quantity;
+              $product_to->save();
+            }
           }
         }
 
         $order->products()->sync($products);
       } else {
+        foreach ($order->products as $product) {
+          $product->quantity = $product->quantity + $product->pivot->quantity;
+          $product->save();
+        }
+
         $order->products()->detach();
       }
 
@@ -276,11 +300,23 @@
         foreach ($request->packages as $key => $value) {
           foreach ($value as $id => $quantity) {
             $packages[$id] = ['quantity' => $quantity, 'type' => 'package'];
+
+            $package_to = Package::find($id);
+
+            if ($package_to) {
+              $package_to->quantity = $package_to->quantity - (int) $quantity;
+              $package_to->save();
+            }
           }
         }
 
         $order->packages()->sync($packages);
       } else {
+        foreach ($order->packages as $package) {
+          $package->quantity = $package->quantity + $package->pivot->quantity;
+          $package->save();
+        }
+
         $order->packages()->detach();
       }
     }
@@ -288,7 +324,18 @@
     public function delete_order(Order $order)
     {
       if (auth()->user()->admin) {
+        foreach ($order->products as $product) {
+          $product->quantity = $product->quantity + $product->pivot->quantity;
+          $product->save();
+        }
+
         $order->products()->detach();
+
+        foreach ($order->packages as $package) {
+          $package->quantity = $package->quantity + $package->pivot->quantity;
+          $package->save();
+        }
+
         $order->packages()->detach();
 
         $order->delete();

@@ -31,11 +31,11 @@
         </a>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link {{request()->route()->getName() == 'dashboard.reports' ? 'active' : ''}}" href="{{route('dashboard.reports')}}">
-            Reports
-        </a>
-    </li>
+    {{--<li class="nav-item">--}}
+        {{--<a class="nav-link {{request()->route()->getName() == 'dashboard.reports' ? 'active' : ''}}" href="{{route('dashboard.reports')}}">--}}
+            {{--Reports--}}
+        {{--</a>--}}
+    {{--</li>--}}
     @if(auth()->user()->admin)
         <li class="nav-item">
             <hr />

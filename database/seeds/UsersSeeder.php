@@ -19,6 +19,7 @@
         [
           'first_name' => 'Alex',
           'last_name' => 'Saint Surin',
+          'business' => 'Nouriyo Ayiti',
           'email' => 'alex@nouriyoayiti.com',
           'password' => bcrypt('password'),
           'admin' => true,
@@ -26,6 +27,7 @@
         [
           'first_name' => 'Rita Marie',
           'last_name' => 'Joseph',
+          'business' => 'Nouriyo Ayiti',
           'email' => 'rita@nouriyoayiti.com',
           'password' => bcrypt('password'),
           'admin' => true,
@@ -33,6 +35,7 @@
         [
           'first_name' => 'Wenderson',
           'last_name' => 'Beauchamps',
+          'business' => 'Nouriyo Ayiti',
           'email' => 'wendersonbeauchamps@yahoo.fr',
           'password' => bcrypt('password'),
           'admin' => true,

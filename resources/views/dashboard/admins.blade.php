@@ -55,38 +55,7 @@
                     @foreach($admins as $admin)
                         <tr>
                             <td>
-                                <button type="button" class="btn btn-link" data-toggle="modal"
-                                        data-target="#showAdminModal-{{$admin->id}}">
-                                    {{$admin->fullName}}
-                                </button>
-                                <div class="modal fade" id="showAdminModal-{{$admin->id}}" tabindex="-1"
-                                     role="dialog"
-                                     aria-labelledby="showAdminModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title"
-                                                    id="showAdminModalLabel">{{$admin->fullName}}</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div><img height="200" src="{{$admin->image_url}}"/></div>
-                                                <p>
-                                                    {{$admin->description}}
-                                                </p>
-                                            </div>
-
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                                    Close
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                {{$admin->fullName}}
                             </td>
                             @if(auth()->user()->admin)
                                 <td>

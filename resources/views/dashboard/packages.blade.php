@@ -48,6 +48,7 @@
                     <tr>
                         <th>Image</th>
                         <th>Name</th>
+                        <th>Quantity</th>
                         <th>Products</th>
                         @if(auth()->user()->admin)
                             <th>Price</th>
@@ -99,6 +100,7 @@
                                     </div>
                                 </div>
                             </td>
+                            <td>{{$package->quantity}}</td>
                             <td>{{$package->products_count}}</td>
                             @if(auth()->user()->admin)
                                 <td>{{$package->price}}</td>

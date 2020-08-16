@@ -30,6 +30,16 @@
       return $this->belongsTo(Beneficiary::class);
     }
 
+    public function agentWhoTookTheOrder()
+    {
+      return $this->belongsTo(User::class, 'taken_by');
+    }
+
+    public function agentWhoDeliveredTheOrder()
+    {
+      return $this->belongsTo(User::class, 'delivered_by');
+    }
+
     public static function getNumber()
     {
       do {

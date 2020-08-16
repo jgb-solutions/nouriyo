@@ -19,6 +19,8 @@
         $table->enum('state', ['processing', 'ready', 'delivering', 'delivered']);
         $table->unsignedInteger('client_id');
         $table->unsignedInteger('beneficiary_id');
+        $table->unsignedInteger('taken_by')->nullable();
+        $table->unsignedInteger('delivered_by')->nullable();
         $table->string("receipt")->nullable();
         $table->timestamps();
       });

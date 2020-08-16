@@ -9,6 +9,7 @@
     return [
       'name' => $faker->name,
       'price' => $faker->numberBetween(5, 500),
+      'quantity' => $faker->numberBetween(5, 50),
       'description' => $faker->text,
     ];
   });

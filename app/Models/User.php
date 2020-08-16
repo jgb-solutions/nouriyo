@@ -43,6 +43,16 @@
       return $this->hasMany(Order::class);
     }
 
+    public function ordersTaken()
+    {
+      return $this->hasMany(Order::class, 'taken_by');
+    }
+
+    public function ordersDelivered()
+    {
+      return $this->hasMany(Order::class, 'delivered_by');
+    }
+
     public function scopeAdmins($query)
     {
       return $query->whereAdmin(1);

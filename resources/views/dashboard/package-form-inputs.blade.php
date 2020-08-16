@@ -25,6 +25,18 @@
     </div>
 
     <div class="form-group col-12">
+        <label for="package_quantity">Quantity <b>*</b></label>
+        <input type="number"
+               required
+               class="form-control"
+               id="package_quantity"
+               name="package_quantity"
+               placeholder="Enter the quantity"
+               min="1"
+               value="{{!empty($package) ? $package->quantity : old('package_quantity')}}">
+    </div>
+
+    <div class="form-group col-12">
         <label for="price">Price <b>*</b></label>
         <input type="number"
                required

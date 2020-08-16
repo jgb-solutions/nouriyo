@@ -70,9 +70,18 @@
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title"
-                                                    id="showOrderModalLabel">Details for order number
-                                                    <b>{{$order->number}}</b></h5>
+                                                <h5 class="modal-title" id="showOrderModalLabel">
+                                                    Details for order number <b>{{$order->number}}</b>
+                                                    <br/>
+                                                    Taken by <b>{{$order->agentWhoTookTheOrder->fullName}}</b>
+                                                    <small>({{$order->agentWhoTookTheOrder->business}})</small>
+
+                                                    @if ($order->agentWhoDeliveredTheOrder)
+                                                        <br/>
+                                                        Delivered by <b>{{$order->agentWhoDeliveredTheOrder->fullName}}</b>
+                                                        <small>({{$order->agentWhoDeliveredTheOrder->business}})</small>
+                                                    @endif
+                                                </h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
