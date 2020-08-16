@@ -70,17 +70,28 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title"
-                                                    id="showClientModalLabel">{{$client->fullName}}</h5>
+                                                    id="showClientModalLabel">Client's details</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <div><img height="200" src="{{$client->image_url}}"/></div>
-                                                <p>
-                                                    {{$client->description}}
-                                                </p>
+                                                <div class="list-group w-100">
+                                                    <div class="list-group-item disabled active">Personal Info</div>
+                                                    <div class="list-group-item list-group-item-action">
+                                                        <h5 class="mb-1">Name: <b>{{$client->fullName}}</b></h5>
+                                                        <h5 class="mb-1">Phone: <b>{{$client->phone}}</b></h5>
+                                                    </div>
+                                                </div>
+
+                                                <div class="list-group w-100">
+                                                    <div class="list-group-item disabled active">Orders Info</div>
+                                                    <div class="list-group-item list-group-item-action">
+                                                        <h5 class="mb-1">Number of Orders:
+                                                            <b>{{$client->orders_count}}</b></h5>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="modal-footer">

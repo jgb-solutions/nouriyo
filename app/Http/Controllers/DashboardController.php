@@ -200,12 +200,17 @@
 
 
     // Orders
-    public function orders()
+    public function orders(Request $request)
     {
+      $query =  Order::latest();
+
+      if ($request->filled('number')) {
+        $query->where('number', 'like', '%' . $request->query('number') . '%');
+      }
+
       return view('dashboard.orders', [
-        'orders' => Order::with(['products', 'packages', 'client', 'beneficiary'])
+        'orders' => $query->with(['products', 'packages', 'client', 'beneficiary'])
           ->withCount(['products', 'packages'])
-          ->latest()
           ->paginate(20),
         'products' => Product::orderBy('name', 'asc')->get(),
         'packages' => Package::orderBy('name', 'asc')->get(),

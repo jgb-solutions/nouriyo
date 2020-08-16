@@ -123,21 +123,24 @@
             aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <form class="form-inline">
+    <form class="form-inline" action="{{route('dashboard.orders')}}">
         <div class="form-group row">
-            <div class="col-md-6">
-                <input class="form-control w-100" type="text" placeholder="Search"
-                       aria-label="Search">
+            <div class="col-md-10">
+                <input
+                        name="number"
+                        class="form-control w-100"
+                        type="text"
+                        placeholder="Search an Order"
+                        aria-label="Search">
             </div>
-            <div class="col-md-4">
-                <select class="custom-select" id="validationCustom04" required>
-                    <option selected value="products">Products</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
-
-            </div>
+            {{--<div class="col-md-4">--}}
+            {{--<select class="custom-select" id="validationCustom04" required>--}}
+            {{--<option selected value="products">Products</option>--}}
+            {{--<option value="1">One</option>--}}
+            {{--<option value="2">Two</option>--}}
+            {{--<option value="3">Three</option>--}}
+            {{--</select>--}}
+            {{--</div>--}}
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary my-1">Search</button>
             </div>

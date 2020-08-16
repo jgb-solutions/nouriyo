@@ -78,17 +78,40 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title"
-                                                    id="showPackageModalLabel">{{$package->name}}</h5>
+                                                    id="showPackageModalLabel">Package's details</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <div><img height="200" src="{{$package->image_url}}"/></div>
-                                                <p>
-                                                    {{$package->description}}
-                                                </p>
+                                                <div class="list-group w-100">
+                                                    <div class="list-group-item disabled active">Info</div>
+                                                    <div class="list-group-item list-group-item-action">
+                                                        <h6 class="mb-1">Name: <b>{{$package->name}}</b></h6>
+                                                        <h6 class="mb-1">Quantity: <b>{{$package->quantity}}</b></h6>
+                                                        <h6 class="mb-1">Price: <b>{{$package->price}}
+                                                                dollars</b>
+                                                        </h6>
+                                                        <h6 class="mb-1">Description:
+                                                            <b>{{$package->description}}</b>
+                                                        </h6>
+                                                    </div>
+                                                </div>
+
+                                                <div class="list-group w-100">
+                                                    <div class="list-group-item disabled active">Products</div>
+                                                        @foreach($package->products as $product)
+                                                    <div class="list-group-item list-group-item-action">
+                                                            <div class="d-flex w-100 justify-content-between">
+                                                                <h5 class="mb-1">Name: <b>{{$product->name}}</b>
+                                                                </h5>
+                                                            </div>
+                                                            <h6 class="mb-1">Quantity: <b>{{$product->quantity}}</b>
+                                                            </h6>
+                                                    </div>
+                                                        @endforeach
+                                                </div>
                                             </div>
 
                                             <div class="modal-footer">

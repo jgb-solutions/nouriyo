@@ -71,17 +71,29 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title"
-                                                    id="showBeneficiaryModalLabel">{{$beneficiary->fullName}}</h5>
+                                                    id="showBeneficiaryModalLabel">Beneficiary's details</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <div><img height="200" src="{{$beneficiary->image_url}}"/></div>
-                                                <p>
-                                                    {{$beneficiary->description}}
-                                                </p>
+                                                <div class="list-group w-100">
+                                                    <div class="list-group-item disabled active">Personal Info</div>
+                                                    <div class="list-group-item list-group-item-action">
+                                                        <h5 class="mb-1">Name: <b>{{$beneficiary->fullName}}</b></h5>
+                                                        <h5 class="mb-1">Phone: <b>{{$beneficiary->phone}}</b></h5>
+                                                        <h5 class="mb-1">Address: <b>{{$beneficiary->address}}</b></h5>
+                                                    </div>
+                                                </div>
+
+                                                <div class="list-group w-100">
+                                                    <div class="list-group-item disabled active">Orders Info</div>
+                                                    <div class="list-group-item list-group-item-action">
+                                                        <h5 class="mb-1">Number of Orders Received:
+                                                            <b>{{$beneficiary->orders_count}}</b></h5>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <div class="modal-footer">

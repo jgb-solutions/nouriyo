@@ -53,6 +53,7 @@
       Route::put('/orders/{order}', 'DashboardController@update_order')->name('update-order');
       Route::delete('/orders/{order}', 'DashboardController@delete_order')->name('delete-order');
 
+      // Settings
       Route::get('/settings', 'DashboardController@settings')->name('settings');
       Route::put('/settings/{settings}', 'DashboardController@update_settings')->name('update-settings');
     });

@@ -64,7 +64,7 @@
                         <tr>
                             <td>
                                 <img width="50"
-                                     src="{{ $product->image ? $product->image : 'https://via.placeholder.com/50C/O'}}"/>
+                                     src="{{ $product->image ? $product->image_url : 'https://via.placeholder.com/50C/O'}}"/>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-link" data-toggle="modal"
@@ -78,17 +78,41 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title"
-                                                    id="showProductModalLabel">{{$product->name}}</h5>
+                                                    id="showProductModalLabel">Product's details</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <div><img height="200" src="{{$product->image_url}}"/></div>
-                                                <p>
-                                                    {{$product->description}}
-                                                </p>
+                                                <div class="list-group w-100">
+                                                    <div class="list-group-item disabled active">Info</div>
+                                                    <div class="list-group-item list-group-item-action">
+                                                        <h6 class="mb-1">Name: <b>{{$product->name}}</b></h6>
+                                                        <h6 class="mb-1">Quantity: <b>{{$product->quantity}}</b></h6>
+                                                            <h6 class="mb-1">Buying Price: <b>{{$product->buying_price}}
+                                                                    dollars</b>
+                                                            </h6>
+                                                            <h6 class="mb-1">Selling Price:
+                                                                <b>{{$product->selling_price}} dollars</b>
+                                                            </h6>
+                                                            <h6 class="mb-1">Description:
+                                                                <b>{{$product->description}}</b>
+                                                            </h6>
+                                                    </div>
+                                                </div>
+
+                                                @if($product->image)
+                                                    <div class="list-group w-100">
+                                                        <div class="list-group-item disabled active">Photo</div>
+                                                        <div class="list-group-item list-group-item-action">
+                                                            <img
+                                                                    height="200"
+                                                                    src="{{$product->image_url }}"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                @endif
                                             </div>
 
                                             <div class="modal-footer">
