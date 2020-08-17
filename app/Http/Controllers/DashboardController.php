@@ -9,6 +9,7 @@
   use App\Models\User;
   use App\Models\Client;
   use App\Models\Setting;
+  use Carbon\Carbon;
   use Illuminate\Http\Request;
 
   class DashboardController extends Controller
@@ -33,7 +34,16 @@
         }
       }
 
-      return view('dashboard.index');
+      return view('dashboard.index', [
+        'orders_of_today' => Order::latest()
+          ->whereDate('created_at', Carbon::today())
+          ->where('state', 'delivered')
+          ->take(10)
+          ->get(),
+        'latest_orders' => Order::latest()
+          ->take(10)
+          ->get(),
+      ]);
     }
 
     // Products

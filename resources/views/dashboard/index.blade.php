@@ -6,45 +6,67 @@
             <h1 class="h2">Dashboard</h1>
         </div>
 
-        <div class="col-sm-4">
-            <div class="list-group w-100">
-                <div class="list-group-item disabled active">Client</div>
-                <div class="list-group-item list-group-item-action">
-                    <h5 class="mb-1">Name: <b>{{$order->client->fullName}}</b></h5>
-                    <h5 class="mb-1">Phone: <b>{{$order->client->phone}}</b></h5>
-                </div>
-            </div>
-            <div class="list-group w-100">
-                <div class="list-group-item disabled active">Beneficiary</div>
-                <div class="list-group-item list-group-item-action">
-                    <h5 class="mb-1">Name: <b>{{$order->beneficiary->fullName}}</b>
-                    </h5>
-                    <h5 class="mb-1">Phone: <b>{{$order->beneficiary->phone}}</b>
-                    </h5>
-                    <h5 class="mb-1">Address:
-                        <b>{{$order->beneficiary->address}}</b></h5>
-                </div>
-            </div>
-            <div class="list-group w-100">
-                <div class="list-group-item disabled active">Fees</div>
-                <div class="list-group-item list-group-item-action">
-                    <h5 class="mb-1">Transport Fee: <b>{{$order->transport_fee}} dollars</b></h5>
-                    <h5 class="mb-1">Service Fee: <b>{{$order->service_fee}} dollars</b></h5>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="list-group w-100">
+                    <div class="list-group-item disabled active">Orders Delivered Today</div>
+                    @if(count($orders_of_today))
+                        @foreach($orders_of_today as $order)
+                            <div class="list-group-item list-group-item-action">
+                                <h6 class="mb-1">
+                                    Number: <a
+                                            href="{{route('dashboard.orders', ['number' => $order->number])}}">
+                                        <b>{{$order->number}}</b>
+                                    </a>
+                                </h6>
+                                <h6 class="mb-1">Total Without Fees: <b>{{$order->total}} dollars</b></h6>
+                                <h6 class="mb-1">Total With Fees:
+                                    <b>{{$order->total + $order->transport_fee + $order->service_fee }} dollars</b>
+                                </h6>
+
+                                <h6 class="mb-1">State:
+                                    <b>{{ucfirst($order->state)}}</b>
+                                </h6>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="list-group-item list-group-item-action">
+                            <h6 class="h6">There were no orders today</h6>
+                        </div>
+                    @endif
                 </div>
             </div>
 
-            <div class="list-group w-100">
-                <div class="list-group-item disabled active">State</div>
-                <div class="list-group-item list-group-item-action">
-                    <h5 class="mb-1">Current State:
-                        <b>{{ucfirst($order->state)}}</b></h5>
+            <div class="col-sm-6">
+                <div class="list-group w-100">
+                    <div class="list-group-item disabled active">Orders Delivered Today</div>
+                    @if(count($latest_orders))
+                        @foreach($latest_orders as $order)
+                            <div class="list-group-item list-group-item-action">
+                                <h6 class="mb-1">
+                                    Number: <a
+                                            href="{{route('dashboard.orders', ['number' => $order->number])}}">
+                                        <b>{{$order->number}}</b>
+                                    </a>
+                                </h6>
+                                <h6 class="mb-1">Total Without Fees: <b>{{$order->total}} dollars</b></h6>
+                                <h6 class="mb-1">Total With Fees:
+                                    <b>{{$order->total + $order->transport_fee + $order->service_fee }} dollars</b>
+                                </h6>
+
+                                <h6 class="mb-1">State:
+                                    <b>{{ucfirst($order->state)}}</b>
+                                </h6>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="list-group-item list-group-item-action">
+                            <h6 class="h6">There were no orders today</h6>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
-        <div class="col-sm-4"></div>
-        <div class="col-sm-4"></div>
-        <div class="col-sm-4"></div>
-        <div class="col-sm-4"></div>
-        <div class="col-sm-4"></div>
+
     </main>
 @endsection
