@@ -87,7 +87,7 @@
                                                         <h5 class="mb-1">Name: <b>{{$agent->fullName}}</b></h5>
                                                         <h5 class="mb-1">Phone: <b>{{$agent->phone}}</b></h5>
                                                         <h5 class="mb-1">Business: <b>{{$agent->business}}</b></h5>
-                                                        <h5 class="mb-1">Email: <b>{{$agent->business}}</b></h5>
+                                                        <h5 class="mb-1">Email: <b>{{$agent->email}}</b></h5>
                                                         <h5 class="mb-1">Address: <b>{{$agent->address}}</b></h5>
                                                         <h5 class="mb-1">Country: <b>{{$agent->country}}</b></h5>
                                                         @if($agent->state)
