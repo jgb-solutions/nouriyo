@@ -3,7 +3,8 @@
 @section('content')
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Orders {!! request()->filled('number') ? "matching <b>" . request()->query('number') . "</b>" : "" !!}</h1>
+            <h1 class="h2">
+                Orders {!! request()->filled('number') ? "matching <b>" . request()->query('number') . "</b>" : "" !!}</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group mr-2">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addOrderModal">Add
@@ -75,19 +76,20 @@
                                                 <h5 class="modal-title" id="showOrderModalLabel">
                                                     Details for order number: <b>{{$order->number}}</b>
                                                     <br/>
-{{--                                                    Taken by: <b>{{$order->agentWhoTookTheOrder->fullName}}</b>--}}
+                                                    Taken by: <b>{{$order->agentWhoTookTheOrder->fullName}}</b>
                                                     <small>({{$order->agentWhoTookTheOrder->business}})</small>
 
                                                     @if ($order->agentWhoDeliveredTheOrder)
                                                         <br/>
                                                         Delivered by:
-{{--                                                        <b>{{$order->agentWhoDeliveredTheOrder->fullName}}</b>--}}
+                                                        <b>{{$order->agentWhoDeliveredTheOrder->fullName}}</b>
                                                         <small>({{$order->agentWhoDeliveredTheOrder->business}})</small>
                                                     @endif
 
                                                     <br/>
                                                     Total Without Fees: <b>{{$order->total}}</b> <br/>
-                                                    Total With Fees: <b>{{$order->total + $order->transport_fee + $order->service_fee}}</b>
+                                                    Total With Fees:
+                                                    <b>{{$order->total + $order->transport_fee + $order->service_fee}}</b>
                                                 </h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
@@ -98,26 +100,37 @@
                                                 <div class="list-group w-100">
                                                     <div class="list-group-item disabled active">Client</div>
                                                     <div class="list-group-item list-group-item-action">
-{{--                                                        <h5 class="mb-1">Name: <b>{{$order->client->fullName}}</b></h5>--}}
-                                                        <h5 class="mb-1">Phone: <b>{{$order->client->phone}}</b></h5>
+                                                        @if($order->client)
+                                                            <h5 class="mb-1">Name: <b>{{$order->client->fullName}}</b>
+                                                            </h5>
+                                                            <h5 class="mb-1">Phone: <b>{{$order->client->phone}}</b>
+                                                            </h5>
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <div class="list-group w-100">
                                                     <div class="list-group-item disabled active">Beneficiary</div>
                                                     <div class="list-group-item list-group-item-action">
-{{--                                                        <h5 class="mb-1">Name: <b>{{$order->beneficiary->fullName}}</b>--}}
-                                                        </h5>
-                                                        <h5 class="mb-1">Phone: <b>{{$order->beneficiary->phone}}</b>
-                                                        </h5>
-                                                        <h5 class="mb-1">Address:
-                                                            <b>{{$order->beneficiary->address}}</b></h5>
+                                                        @if($order->beneficiary)
+                                                            <h5 class="mb-1">Name:
+                                                                <b>{{$order->beneficiary->fullName}}</b>
+                                                            </h5>
+                                                            <h5 class="mb-1">Phone:
+                                                                <b>{{$order->beneficiary->phone}}</b>
+                                                            </h5>
+                                                            <h5 class="mb-1">Address:
+                                                                <b>{{$order->beneficiary->address}}</b>
+                                                            </h5>
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <div class="list-group w-100">
                                                     <div class="list-group-item disabled active">Fees</div>
                                                     <div class="list-group-item list-group-item-action">
-                                                        <h5 class="mb-1">Transport Fee: <b>{{$order->transport_fee}} dollars</b></h5>
-                                                        <h5 class="mb-1">Service Fee: <b>{{$order->service_fee}} dollars</b></h5>
+                                                        <h5 class="mb-1">Transport Fee: <b>{{$order->transport_fee}}
+                                                                dollars</b></h5>
+                                                        <h5 class="mb-1">Service Fee: <b>{{$order->service_fee}}
+                                                                dollars</b></h5>
                                                     </div>
                                                 </div>
 
@@ -175,8 +188,12 @@
                                     </div>
                                 </div>
                             </td>
-{{--                            <td>{{$order->client->fullName}}</td>--}}
-{{--                            <td>{{$order->beneficiary->fullName}}</td>--}}
+                            @if($order->client)
+                                <td>{{$order->client->fullName}}</td>
+                            @endif
+                            @if($order->beneficiary)
+                                <td>{{$order->beneficiary->fullName}}</td>
+                            @endif
                             <td>{{$order->transport_fee}} dollars</td>
                             <td>{{$order->service_fee}} dollars</td>
                             <td>{{$order->total}} dollars</td>

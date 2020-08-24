@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="94487d29-3ddd-48ad-8dc3-13d0fc404aae" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/dashboard/orders.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/dashboard/orders.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,13 +21,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/dashboard/orders.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="650">
-              <caret line="77" column="109" selection-start-line="77" selection-start-column="99" selection-end-line="77" selection-end-column="109" />
-              <caret line="83" column="108" selection-start-line="83" selection-start-column="98" selection-end-line="83" selection-end-column="108" />
-              <caret line="100" column="112" selection-start-line="100" selection-start-column="102" selection-end-line="100" selection-end-column="112" />
-              <caret line="107" column="117" selection-start-line="107" selection-start-column="107" selection-end-line="107" selection-end-column="117" />
-              <caret line="177" column="62" selection-start-line="177" selection-start-column="52" selection-end-line="177" selection-end-column="62" />
-              <caret line="178" column="67" selection-start-line="178" selection-start-column="57" selection-end-line="178" selection-end-column="67" />
+            <state relative-caret-position="354">
+              <caret line="123" column="62" selection-start-line="123" selection-start-column="62" selection-end-line="123" selection-end-column="62" />
             </state>
           </provider>
         </entry>
@@ -118,9 +112,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>.quantity</find>
-      <find>details</find>
-      <find>-&gt;full</find>
       <find>count</find>
       <find>with</find>
       <find>orderst</find>
@@ -148,6 +139,9 @@
       <find>ullna</find>
       <find>Fullname</find>
       <find>fullname</find>
+      <find>-&gt;phone</find>
+      <find>-&gt;client</find>
+      <find>-&gt;benef</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -576,12 +570,12 @@
       <workItem from="1596904561216" duration="32000" />
       <workItem from="1597507159669" duration="7942000" />
       <workItem from="1597600360025" duration="15623000" />
-      <workItem from="1598299381134" duration="311000" />
+      <workItem from="1598299381134" duration="546000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="116680000" />
+    <option name="totallyTimeSpent" value="116915000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="6" />
@@ -602,7 +596,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3942029" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.39337748" />
       <window_info anchor="bottom" id="Thumbnails" order="12" weight="0.3294686" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -952,13 +946,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/dashboard/orders.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
-          <caret line="77" column="109" selection-start-line="77" selection-start-column="99" selection-end-line="77" selection-end-column="109" />
-          <caret line="83" column="108" selection-start-line="83" selection-start-column="98" selection-end-line="83" selection-end-column="108" />
-          <caret line="100" column="112" selection-start-line="100" selection-start-column="102" selection-end-line="100" selection-end-column="112" />
-          <caret line="107" column="117" selection-start-line="107" selection-start-column="107" selection-end-line="107" selection-end-column="117" />
-          <caret line="177" column="62" selection-start-line="177" selection-start-column="52" selection-end-line="177" selection-end-column="62" />
-          <caret line="178" column="67" selection-start-line="178" selection-start-column="57" selection-end-line="178" selection-end-column="67" />
+        <state relative-caret-position="354">
+          <caret line="123" column="62" selection-start-line="123" selection-start-column="62" selection-end-line="123" selection-end-column="62" />
         </state>
       </provider>
     </entry>
