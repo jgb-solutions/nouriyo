@@ -75,13 +75,13 @@
                                                 <h5 class="modal-title" id="showOrderModalLabel">
                                                     Details for order number: <b>{{$order->number}}</b>
                                                     <br/>
-                                                    Taken by: <b>{{$order->agentWhoTookTheOrder->fullName}}</b>
+{{--                                                    Taken by: <b>{{$order->agentWhoTookTheOrder->fullName}}</b>--}}
                                                     <small>({{$order->agentWhoTookTheOrder->business}})</small>
 
                                                     @if ($order->agentWhoDeliveredTheOrder)
                                                         <br/>
                                                         Delivered by:
-                                                        <b>{{$order->agentWhoDeliveredTheOrder->fullName}}</b>
+{{--                                                        <b>{{$order->agentWhoDeliveredTheOrder->fullName}}</b>--}}
                                                         <small>({{$order->agentWhoDeliveredTheOrder->business}})</small>
                                                     @endif
 
@@ -98,14 +98,14 @@
                                                 <div class="list-group w-100">
                                                     <div class="list-group-item disabled active">Client</div>
                                                     <div class="list-group-item list-group-item-action">
-                                                        <h5 class="mb-1">Name: <b>{{$order->client->fullName}}</b></h5>
+{{--                                                        <h5 class="mb-1">Name: <b>{{$order->client->fullName}}</b></h5>--}}
                                                         <h5 class="mb-1">Phone: <b>{{$order->client->phone}}</b></h5>
                                                     </div>
                                                 </div>
                                                 <div class="list-group w-100">
                                                     <div class="list-group-item disabled active">Beneficiary</div>
                                                     <div class="list-group-item list-group-item-action">
-                                                        <h5 class="mb-1">Name: <b>{{$order->beneficiary->fullName}}</b>
+{{--                                                        <h5 class="mb-1">Name: <b>{{$order->beneficiary->fullName}}</b>--}}
                                                         </h5>
                                                         <h5 class="mb-1">Phone: <b>{{$order->beneficiary->phone}}</b>
                                                         </h5>
@@ -175,8 +175,8 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>{{$order->client->fullName}}</td>
-                            <td>{{$order->beneficiary->fullName}}</td>
+{{--                            <td>{{$order->client->fullName}}</td>--}}
+{{--                            <td>{{$order->beneficiary->fullName}}</td>--}}
                             <td>{{$order->transport_fee}} dollars</td>
                             <td>{{$order->service_fee}} dollars</td>
                             <td>{{$order->total}} dollars</td>
