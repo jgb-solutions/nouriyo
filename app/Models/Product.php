@@ -20,7 +20,7 @@ class Product extends Model
 
   public function getImageUrlAttribute()
   {
-    return asset($this->image);
+    return asset('storage/' . $this->image);
   }
 
   public function scopeRand($query)

@@ -56,6 +56,6 @@
 
     public function getReceiptUrlAttribute()
     {
-      return asset($this->receipt);
+      return asset('storage/' . $this->receipt);
     }
   }

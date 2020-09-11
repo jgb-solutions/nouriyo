@@ -20,6 +20,6 @@
 
     public function getImageUrlAttribute()
     {
-      return asset($this->products()->first()->image);
+      return asset('storage/' . $this->products()->first()->image);
     }
   }
