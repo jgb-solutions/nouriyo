@@ -256,9 +256,11 @@
 
         $order->save();
 
-        $this->syncProductsAndPackagesToOrder($order, $request);
+        $hasError = $this->syncProductsAndPackagesToOrder($order, $request);
 
-        alert()->success('New order added!');
+        if(!$hasError) {
+          alert()->success('New order added!');
+        }
 
         return redirect(route('dashboard.orders'));
       } else {
@@ -298,9 +300,11 @@
 
         $order->save();
 
-        $this->syncProductsAndPackagesToOrder($order, $request);
+        $hasError = $this->syncProductsAndPackagesToOrder($order, $request);
 
-        alert()->success('Order updated!');
+        if(!$hasError) {
+          alert()->success('Order updated!');
+        }
       } else {
         alert()->error('Error updating the order!');
       }
@@ -327,9 +331,7 @@
                 $product_to->quantity = $product_to->quantity - (int)$quantity;
                 $product_to->save();
               } else {
-                alert()->error('Quantity not enough!', 'We have ' . $product_to->quantity . 'of product ' . $product_to->name . ' available. You can\'t buy ' . $quantity . '.');
-
-                return;
+                return alert()->error('Product quantity not enough!', 'We have ' . $product_to->quantity . ' of ' . $product_to->name . ' available. You can\'t buy ' . $quantity . '.');
               }
             }
           }
@@ -361,9 +363,7 @@
               $package_to->quantity = $quantity_remaining;
               $package_to->save();
             } else {
-              alert()->error('Quantity not enough!', 'We have ' . $package_to->quantity . 'of package ' . $package_to->name . ' available. You can\'t buy ' . $quantity . '.');
-
-              return;
+              return alert()->error('Package quantity not enough!', 'We have ' . $package_to->quantity . ' of ' . $package_to->name . ' available. You can\'t buy ' . $quantity . '.');
             }
           }
         }

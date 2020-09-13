@@ -198,8 +198,11 @@
                             <td>{{$order->service_fee}} dollars</td>
                             <td>{{$order->total}} dollars</td>
                             <td>
-                                <button type="button" class="btn btn-primary" data-toggle="modal"
-                                        data-target="#editOrderModal-{{$order->id}}">Edit
+                                <button type="button" class="btn btn-primary"
+                                        {{$order->agentCantEdit ? "disabled" : ''}}
+                                        data-toggle="modal"
+                                        data-target="#editOrderModal-{{$order->id}}"
+                                        title="{{$order->agentCantEdit ? 'The time to edit has expired. Please contact an administrator to do so.' : ''}}">Edit
                                 </button>
                                 <div class="modal fade" id="editOrderModal-{{$order->id}}" tabindex="-1"
                                      role="dialog"
