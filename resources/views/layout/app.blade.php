@@ -23,7 +23,8 @@
     </style>
 </head>
 <body>
-@include('flash::message')
+@include('sweetalert::alert')
+
 @yield('page')
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

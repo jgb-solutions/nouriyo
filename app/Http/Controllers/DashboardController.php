@@ -12,6 +12,7 @@
   use Carbon\Carbon;
   use Illuminate\Http\Request;
 
+
   class DashboardController extends Controller
   {
     public $order_states = ['processing', 'ready', 'delivering', 'delivered'];
@@ -60,7 +61,7 @@
 
       Product::create($data);
 
-      flash('New product added!')->overlay()->success();
+      alert()->success('New product added!');
 
       return redirect(route('dashboard.products'));
     }
@@ -72,9 +73,9 @@
 
         $product->update($data);
 
-        flash('Product updated!')->overlay()->success();
+        alert()->success('Product updated!');
       } else {
-        flash('Error deleting the product!')->error();
+        alert()->error('Error deleting the product!');
       }
 
 
@@ -85,9 +86,9 @@
     {
       if (auth()->user()->admin) {
         $product->delete();
-        flash('Product updated!')->success();
+        alert()->success('Product deleted!');
       } else {
-        flash('Error deleting the product!')->error();
+        alert()->error('Error deleting the product!');
       }
 
       return redirect(route('dashboard.products'));
@@ -139,7 +140,7 @@
 
       $this->syncProductsToPackage($package, $request);
 
-      flash('New package added!')->overlay()->success();
+      alert()->success('New package added!');
 
       return redirect(route('dashboard.packages'));
     }
@@ -153,9 +154,9 @@
 
         $this->syncProductsToPackage($package, $request);
 
-        flash('Package updated!')->overlay()->success();
+        alert()->success('Package updated!');
       } else {
-        flash('Error deleting the package!')->error();
+        alert()->error('Error deleting the package!');
       }
 
 
@@ -185,9 +186,9 @@
       if (auth()->user()->admin) {
         $package->products()->detach();
         $package->delete();
-        flash('Package updated!')->success();
+        alert()->success('Package deleted!');
       } else {
-        flash('Error deleting the package!')->error();
+        alert()->error('Error deleting the package!');
       }
 
       return redirect(route('dashboard.packages'));
@@ -212,7 +213,7 @@
     // Orders
     public function orders(Request $request)
     {
-      $query =  Order::latest();
+      $query = Order::latest();
 
       if ($request->filled('number')) {
         $query->where('number', 'like', '%' . $request->query('number') . '%');
@@ -246,8 +247,8 @@
         $order->client_id      = $data['client_id'];
         $order->beneficiary_id = $data['beneficiary_id'];
         $order->taken_by       = auth()->user()->id;
-        $order->transport_fee = $settings->transport_fee;
-        $order->service_fee = $settings->service_fee;
+        $order->transport_fee  = $settings->transport_fee;
+        $order->service_fee    = $settings->service_fee;
 
         if ($request->hasFile('receipt')) {
           $order->receipt = $request->file('receipt')->store('receipts');
@@ -257,11 +258,11 @@
 
         $this->syncProductsAndPackagesToOrder($order, $request);
 
-        flash('New order added!')->overlay()->success();
+        alert()->success('New order added!');
 
         return redirect(route('dashboard.orders'));
       } else {
-        flash('Error creating the order!')->error();
+        alert()->error('Error creating the order!');
       }
     }
 
@@ -293,9 +294,9 @@
 
         $this->syncProductsAndPackagesToOrder($order, $request);
 
-        flash('Order updated!')->overlay()->success();
+        alert()->success('Order updated!');
       } else {
-        flash('Error deleting the order!')->error();
+        alert()->error('Error updating the order!');
       }
 
 
@@ -376,9 +377,9 @@
         $order->packages()->detach();
 
         $order->delete();
-        flash('Package updated!')->success();
+        alert()->success('Package updated!');
       } else {
-        flash('Error deleting the order!')->error();
+        alert()->error('Error deleting the order!');
       }
 
       return redirect(route('dashboard.orders'));
@@ -398,10 +399,10 @@
     {
       return view('dashboard.agents', [
         'agents' => User::latest()
-            ->agents()
-            ->with(['ordersTaken', 'ordersDelivered'])
-            ->withCount(['ordersTaken', 'ordersDelivered'])
-            ->paginate(20),
+          ->agents()
+          ->with(['ordersTaken', 'ordersDelivered'])
+          ->withCount(['ordersTaken', 'ordersDelivered'])
+          ->paginate(20),
         'countries' => ["Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegowina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, the Democratic Republic of the", "Cook Islands", "Costa Rica", "Cote d'Ivoire", "Croatia (Hrvatska)", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "France Metropolitan", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard and Mc Donald Islands", "Holy See (Vatican City State)", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran (Islamic Republic of)", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People's Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan", "Lao, People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia, The Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia (Slovak Republic)", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "Spain", "Sri Lanka", "St. Helena", "St. Pierre and Miquelon", "Sudan", "Suriname", "Svalbard and Jan Mayen Islands", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan, Province of China", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands (British)", "Virgin Islands (U.S.)", "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe"],
       ]);
     }
@@ -412,7 +413,8 @@
 
       User::create($data);
 
-      flash('New agent added!')->overlay()->success();
+      alert()->success('New agent added!');
+
 
       return redirect(route('dashboard.agents'));
     }
@@ -424,9 +426,10 @@
 
         $agent->update($data);
 
-        flash('User updated!')->overlay()->success();
+        alert()->success('User updated!');
+
       } else {
-        flash('Error deleting the product!')->error();
+        alert()->error('Error deleting the product!');
       }
 
       return redirect(route('dashboard.agents'));
@@ -436,9 +439,9 @@
     {
       if (auth()->user()->admin) {
         $agent->delete();
-        flash('User updated!')->success();
+        alert()->success('User updated!');
       } else {
-        flash('Error deleting the agent!')->error();
+        alert()->error('Error deleting the agent!');
       }
 
       return redirect(route('dashboard.agents'));
@@ -497,7 +500,7 @@
 
       Client::create($data);
 
-      flash('New client added!')->overlay()->success();
+      alert()->success('New client added!');
 
       return redirect(route('dashboard.clients'));
     }
@@ -509,9 +512,9 @@
 
         $client->update($data);
 
-        flash('User updated!')->overlay()->success();
+        alert()->success('User updated!');
       } else {
-        flash('Error deleting the product!')->error();
+        alert()->error('Error deleting the product!');
       }
 
       return redirect(route('dashboard.clients'));
@@ -521,9 +524,9 @@
     {
       if (auth()->user()->admin) {
         $client->delete();
-        flash('User updated!')->success();
+        alert()->success('User updated!');
       } else {
-        flash('Error deleting the client!')->error();
+        alert()->error('Error deleting the client!');
       }
 
       return redirect(route('dashboard.clients'));
@@ -561,7 +564,7 @@
 
       Beneficiary::create($data);
 
-      flash('New beneficiary added!')->overlay()->success();
+      alert()->success('New beneficiary added!');
 
       return redirect(route('dashboard.beneficiaries'));
     }
@@ -573,9 +576,9 @@
 
         $beneficiary->update($data);
 
-        flash('User updated!')->overlay()->success();
+        alert()->success('User updated!');
       } else {
-        flash('Error deleting the product!')->error();
+        alert()->error('Error deleting the product!');
       }
 
       return redirect(route('dashboard.beneficiaries'));
@@ -585,9 +588,9 @@
     {
       if (auth()->user()->admin) {
         $beneficiary->delete();
-        flash('User updated!')->success();
+        alert()->success('Beneficiary deleted!');
       } else {
-        flash('Error deleting the beneficiary!')->error();
+        alert()->error('Error deleting the beneficiary!');
       }
 
       return redirect(route('dashboard.beneficiaries'));
@@ -625,8 +628,7 @@
       $data = $this->validate_admin($request);
 
       User::create($data);
-
-      flash('New admin added!')->overlay()->success();
+      alert()->success('New admin added!');
 
       return redirect(route('dashboard.admins'));
     }
@@ -637,10 +639,9 @@
         $data = $this->validate_admin($request);
 
         $admin->update($data);
-
-        flash('User updated!')->overlay()->success();
+        alert()->success('User updated!');
       } else {
-        flash('Error deleting the product!')->error();
+        alert()->error('Error deleting the product!');
       }
 
       return redirect(route('dashboard.admins'));
@@ -650,9 +651,9 @@
     {
       if (auth()->user()->admin) {
         $admin->delete();
-        flash('User updated!')->success();
+        alert()->success('This admin has been deleted!');
       } else {
-        flash('Error deleting the admin!')->error();
+        alert()->error('Error deleting the admin!');
       }
 
       return redirect(route('dashboard.admins'));
@@ -687,7 +688,7 @@
     public function settings()
     {
       return view('dashboard.settings', [
-        'settings' => Setting::first()
+        'settings' => Setting::first(),
       ]);
     }
 
@@ -695,9 +696,9 @@
     {
       if (auth()->user()->admin) {
         $settings->update($request->all());
-        flash('Settings updated!')->overlay()->success();
+        alert()->success('Settings updated!');
       } else {
-        flash('Error deleting the settings!')->error();
+        alert()->error('Error deleting the settings!');
       }
 
       return redirect(route('dashboard.settings'));

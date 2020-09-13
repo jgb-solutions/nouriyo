@@ -39,7 +39,7 @@
 
             <div class="col-sm-6">
                 <div class="list-group w-100">
-                    <div class="list-group-item disabled active">Orders Delivered Today</div>
+                    <div class="list-group-item disabled active">Latest Orders</div>
                     @if(count($latest_orders))
                         @foreach($latest_orders as $order)
                             <div class="list-group-item list-group-item-action">
