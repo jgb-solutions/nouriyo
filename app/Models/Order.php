@@ -2,6 +2,7 @@
 
   namespace App\Models;
 
+  use Carbon\Carbon;
   use Illuminate\Database\Eloquent\Model;
 
   class Order extends Model
@@ -57,5 +58,10 @@
     public function getReceiptUrlAttribute()
     {
       return asset('storage/' . $this->receipt);
+    }
+
+    public function getAgentCantEditAttribute()
+    {
+      return auth()->user()->agent && $this->created_at->diffInMinutes(Carbon::now()) >= 5;
     }
   }

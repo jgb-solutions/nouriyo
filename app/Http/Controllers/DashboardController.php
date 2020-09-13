@@ -270,6 +270,12 @@
     {
       $user = auth()->user();
 
+      if ($order->agent_cant_edit) {
+        alert()->error('Time to edit expired!', "You can no longer edit this order. Please contact an administrator.");
+
+        return back();
+      }
+
       if ($user->admin || $user->active || $user->canTakeOrders) {
         $data = $this->validate_order($request);
 
@@ -314,22 +320,30 @@
             $products[$id] = ['quantity' => $quantity, 'type' => 'product'];
 
             $product_to = Product::find($id);
-
             if ($product_to) {
-              $product_to->quantity = $product_to->quantity - (int)$quantity;
-              $product_to->save();
+              $quantity_remaining = $product_to->quantity - (int)$quantity;
+
+              if ($quantity_remaining >= 0) {
+                $product_to->quantity = $product_to->quantity - (int)$quantity;
+                $product_to->save();
+              } else {
+                alert()->error('Quantity not enough!', 'We have ' . $product_to->quantity . 'of product ' . $product_to->name . ' available. You can\'t buy ' . $quantity . '.');
+
+                return;
+              }
             }
           }
         }
 
         $order->products()->sync($products);
       } else {
+//        dd('flushing products');
         foreach ($order->products as $product) {
-          $product->quantity = $product->quantity + $product->pivot->quantity;
+          $product->quantity += $product->pivot->quantity;
           $product->save();
         }
 
-        $order->products()->detach();
+        $order->products()->detach($order->products->pluck('id'));
       }
 
       if ($request->has('packages')) {
@@ -341,21 +355,28 @@
 
             $package_to = Package::find($id);
 
-            if ($package_to) {
-              $package_to->quantity = $package_to->quantity - (int)$quantity;
+            $quantity_remaining = $package_to->quantity - (int)$quantity;
+
+            if ($quantity_remaining >= 0) {
+              $package_to->quantity = $quantity_remaining;
               $package_to->save();
+            } else {
+              alert()->error('Quantity not enough!', 'We have ' . $package_to->quantity . 'of package ' . $package_to->name . ' available. You can\'t buy ' . $quantity . '.');
+
+              return;
             }
           }
         }
 
         $order->packages()->sync($packages);
       } else {
+//        dd('flushing packages');
         foreach ($order->packages as $package) {
-          $package->quantity = $package->quantity + $package->pivot->quantity;
+          $package->quantity += $package->pivot->quantity;
           $package->save();
         }
 
-        $order->packages()->detach();
+        $order->packages()->detach($order->packages->pluck('id'));
       }
     }
 
@@ -377,7 +398,7 @@
         $order->packages()->detach();
 
         $order->delete();
-        alert()->success('Package updated!');
+        alert()->success('Order <b> ' . $order->number . ' </b> deleted!');
       } else {
         alert()->error('Error deleting the order!');
       }
