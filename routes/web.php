@@ -53,6 +53,10 @@
       Route::put('/orders/{order}', 'DashboardController@update_order')->name('update-order');
       Route::delete('/orders/{order}', 'DashboardController@delete_order')->name('delete-order');
 
+      // Cancel or Restore Orders
+      Route::put('/orders/{order}/cancel', 'DashboardController@cancel_order')->name('cancel-order');
+      Route::put('/orders/{order}/restore', 'DashboardController@restore_order')->name('restore-order');
+
       // Settings
       Route::get('/settings', 'DashboardController@settings')->name('settings');
       Route::put('/settings/{settings}', 'DashboardController@update_settings')->name('update-settings');

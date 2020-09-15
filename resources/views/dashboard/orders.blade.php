@@ -56,6 +56,7 @@
                         <th>Edit</th>
                         @if(auth()->user()->admin)
                             <th>Delete</th>
+                            <th>Cancel /<br/> Restore</th>
                         @endif
                     </tr>
                     </thead>
@@ -64,8 +65,11 @@
                         <tr>
                             <td>
                                 <button type="button" class="btn btn-link" data-toggle="modal"
-                                        data-target="#showOrderModal-{{$order->id}}">
-                                    {{$order->number}}
+                                        data-target="#showOrderModal-{{$order->id}}"
+                                        style="{{$order->cancelled ? 'text-decoration:line-through;' : ''}}"
+                                        title="{{$order->cancelled ? 'This order was cancelled. Please contact an administrator.' : ''}}"
+                                        {{$order->cancelled ? 'disabled' : ''}}>
+                                    {{$order->number}} {{$order->cancelled ? '(cancelled)' : ''}}
                                 </button>
                                 <div class="modal fade" id="showOrderModal-{{$order->id}}" tabindex="-1"
                                      role="dialog"
@@ -202,7 +206,8 @@
                                         {{$order->agentCantEdit ? "disabled" : ''}}
                                         data-toggle="modal"
                                         data-target="#editOrderModal-{{$order->id}}"
-                                        title="{{$order->agentCantEdit ? 'The time to edit has expired. Please contact an administrator to do so.' : ''}}">Edit
+                                        title="{{$order->agentCantEdit ? 'The time to edit has expired. Please contact an administrator to do so.' : ''}}">
+                                    Edit
                                 </button>
                                 <div class="modal fade" id="editOrderModal-{{$order->id}}" tabindex="-1"
                                      role="dialog"
@@ -248,6 +253,25 @@
                                                 class="btn btn-danger">Delete
                                         </button>
                                     </form>
+                                </td>
+                                <td>
+                                    @if($order->cancelled)
+                                        <form method="post" action="{{route('dashboard.restore-order', $order->id)}}">
+                                            @method("put")
+                                            @csrf
+                                            <button onclick='return confirm("Are you sure?")' type="submit"
+                                                    class="btn btn-secondary">Restore
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form method="post" action="{{route('dashboard.cancel-order', $order->id)}}">
+                                            @method("put")
+                                            @csrf
+                                            <button onclick='return confirm("Are you sure?")' type="submit"
+                                                    class="btn btn-secondary">Cancel
+                                            </button>
+                                        </form>
+                                    @endif
                                 </td>
                             @endif
                         </tr>

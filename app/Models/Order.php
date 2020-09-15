@@ -8,6 +8,7 @@
   class Order extends Model
   {
     protected $guarded = [];
+    protected $with = ['cancelled'];
 
     public function client()
     {
@@ -39,6 +40,11 @@
     public function agentWhoDeliveredTheOrder()
     {
       return $this->belongsTo(User::class, 'delivered_by');
+    }
+
+    public function cancelled()
+    {
+      return $this->hasOne(CancelledOrder::class);
     }
 
     public static function getNumber()

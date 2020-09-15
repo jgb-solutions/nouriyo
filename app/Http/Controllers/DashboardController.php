@@ -258,7 +258,7 @@
 
         $hasError = $this->syncProductsAndPackagesToOrder($order, $request);
 
-        if(!$hasError) {
+        if (!$hasError) {
           alert()->success('New order added!');
         }
 
@@ -302,7 +302,7 @@
 
         $hasError = $this->syncProductsAndPackagesToOrder($order, $request);
 
-        if(!$hasError) {
+        if (!$hasError) {
           alert()->success('Order updated!');
         }
       } else {
@@ -723,5 +723,32 @@
       }
 
       return redirect(route('dashboard.settings'));
+    }
+
+    public function cancel_order(Request $request, Order $order)
+    {
+      if ($request->user()->admin) {
+        $order->cancelled()->create();
+
+        alert()->success('Order successfully cancelled!');
+
+      } else {
+        alert()->error('You must be an admin to cancel an order.');
+      }
+
+      return back();
+    }
+
+    public function restore_order(Request $request, Order $order)
+    {
+      if ($request->user()->admin) {
+        $order->cancelled->delete();
+
+        alert()->success('Order successfully restored!');
+      } else {
+        alert()->error('You must be an admin to cancel an order.');
+      }
+
+      return back();
     }
   }
