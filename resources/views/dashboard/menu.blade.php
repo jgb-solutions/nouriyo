@@ -39,11 +39,18 @@
         </a>
     </li>
 
-    {{--<li class="nav-item">--}}
-    {{--<a class="nav-link {{request()->route()->getName() == 'dashboard.reports' ? 'active' : ''}}" href="{{route('dashboard.reports')}}">--}}
-    {{--Reports--}}
-    {{--</a>--}}
-    {{--</li>--}}
+    @if(auth()->user()->agent)
+        <li class="nav-item">
+            <hr/>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{request()->route()->getName() == 'dashboard.agent-report' ? 'active' : ''}}"
+               href="{{route('dashboard.agent-report')}}">
+                Business Report
+            </a>
+        </li>
+    @endif
+
     @if(auth()->user()->admin)
         <li class="nav-item">
             <hr/>

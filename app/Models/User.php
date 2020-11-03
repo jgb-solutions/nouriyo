@@ -1,73 +1,83 @@
 <?php
 
-  namespace App\Models;
+    namespace App\Models;
 
-  use Illuminate\Contracts\Auth\MustVerifyEmail;
-  use Illuminate\Foundation\Auth\User as Authenticatable;
-  use Illuminate\Notifications\Notifiable;
+    use Illuminate\Contracts\Auth\MustVerifyEmail;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Illuminate\Notifications\Notifiable;
 
-  class User extends Authenticatable
-  {
-    use Notifiable;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = [];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-      'password', 'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-      'email_verified_at' => 'datetime',
-      'admin' => 'boolean',
-      'agent' => 'boolean',
-      'active' => 'boolean',
-    ];
-
-    public function ordersTaken()
+    class User extends Authenticatable
     {
-      return $this->hasMany(Order::class, 'taken_by');
-    }
+        use Notifiable;
 
-    public function ordersDelivered()
-    {
-      return $this->hasMany(Order::class, 'delivered_by');
-    }
+        /**
+         * The attributes that are mass assignable.
+         *
+         * @var array
+         */
+        protected $guarded = [];
 
-    public function scopeAdmins($query)
-    {
-      return $query->whereAdmin(1);
-    }
+        /**
+         * The attributes that should be hidden for arrays.
+         *
+         * @var array
+         */
+        protected $hidden = [
+            'password', 'remember_token',
+        ];
 
-    public function scopeAgents($query)
-    {
-      return $query->whereAgent(1);
-    }
+        /**
+         * The attributes that should be cast to native types.
+         *
+         * @var array
+         */
+        protected $casts = [
+            'email_verified_at' => 'datetime',
+            'admin' => 'boolean',
+            'agent' => 'boolean',
+            'active' => 'boolean',
+        ];
 
-    public function getFullNameAttribute()
-    {
-      return $this->first_name . ' ' . $this->last_name;
-    }
+        public function ordersTaken()
+        {
+            return $this->hasMany(Order::class, 'taken_by');
+        }
 
-    public function getCanTakeOrdersAttribute() {
-        $total_orders_sum = $this->ordersDelivered->reduce(function ($value, $ordersDelivered) {
-          return $value + $ordersDelivered->total;
-        }, 0);
+        public function ordersDelivered()
+        {
+            return $this->hasMany(Order::class, 'delivered_by');
+        }
 
-        return $this->limit > $total_orders_sum;
+        public function scopeAdmins($query)
+        {
+            return $query->whereAdmin(1);
+        }
+
+        public function scopeAgents($query)
+        {
+            return $query->whereAgent(1);
+        }
+
+        public function getFullNameAttribute()
+        {
+            return $this->first_name . ' ' . $this->last_name;
+        }
+
+        public function getCanTakeOrdersAttribute()
+        {
+            return $this->limit > $this->total_due;
+        }
+
+        public function getTotalSoldAttribute()
+        {
+            return $this->ordersTaken()
+                ->with(['products', 'packages'])
+                ->get(['id'])
+                ->sum('total');
+        }
+
+        public function getTotalDueAttribute()
+        {
+            return $this->due ? $this->due : $this->total_sold - $this->paid;
+        }
     }
-  }

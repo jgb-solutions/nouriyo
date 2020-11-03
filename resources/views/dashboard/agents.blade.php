@@ -105,6 +105,16 @@
                                                             <b>{{$agent->orders_taken_count}}</b></h5>
                                                         <h5 class="mb-1">Number of Orders Delivered:
                                                             <b>{{$agent->orders_delivered_count}}</b></h5>
+                                                        <h5 class="mb-1">Total Sold:
+                                                            <b>{{$agent->total_sold}} dollars</b>
+                                                        </h5>
+                                                        <h5 class="mb-1">Total Due:
+                                                            <b>{{$agent->total_due}}</b>
+                                                        </h5>
+
+                                                        <h5 class="mb-1">Total Paid:
+                                                            <b>{{$agent->paid}}</b>
+                                                        </h5>
                                                     </div>
                                                 </div>
 

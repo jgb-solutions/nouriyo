@@ -70,6 +70,32 @@
     </div>
 
     <div class="form-group col-12">
+        <label for="due">Total Due</label>
+        <input type="number"
+               required
+               class="form-control"
+               id="due"
+               name="due"
+               placeholder="Enter the total due by the agent"
+               step="0.01"
+               min="0"
+               value="{{!empty($agent) ? $agent->due : old('due')}}">
+    </div>
+
+    <div class="form-group col-12">
+        <label for="paid">Total Paid</label>
+        <input type="number"
+               required
+               class="form-control"
+               id="paid"
+               name="paid"
+               placeholder="Enter the total paid by the agent"
+               step="0.01"
+               min="0"
+               value="{{!empty($agent) ? $agent->paid : old('paid')}}">
+    </div>
+
+    <div class="form-group col-12">
         <label for="country">Country </label>
         <select class="form-control" id="exampleFormControlSelect1" name="country">
             <option disabled>Choose a country</option>

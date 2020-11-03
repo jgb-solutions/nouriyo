@@ -29,6 +29,9 @@
       Route::put('/clients/{client}', 'DashboardController@update_client')->name('update-client');
       Route::delete('/clients/{client}', 'DashboardController@delete_client')->name('delete-client');
 
+      // Agent's Report
+      Route::get('/business-report', 'DashboardController@business_report')->name('agent-report');
+
       // Beneficiaries
       Route::get('/beneficiaries', 'DashboardController@beneficiaries')->name('beneficiaries');
       Route::post('/beneficiaries', 'DashboardController@add_beneficiary')->name('add-beneficiaries');
