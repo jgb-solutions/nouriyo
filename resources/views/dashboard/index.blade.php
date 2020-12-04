@@ -19,6 +19,9 @@
                                         <b>{{$order->number}}</b>
                                     </a>
                                 </h6>
+                                <h6 class="mb-1">
+                                    Date: <b>{{$order->created_at->format('d/m/y')}}</b>
+                                </h6>
                                 <h6 class="mb-1">Total Without Fees: <b>{{$order->total}} dollars</b></h6>
                                 <h6 class="mb-1">Total With Fees:
                                     <b>{{$order->total + $order->transport_fee + $order->service_fee }} dollars</b>
@@ -48,6 +51,9 @@
                                             href="{{route('dashboard.orders', ['number' => $order->number])}}">
                                         <b>{{$order->number}}</b>
                                     </a>
+                                </h6>
+                                <h6 class="mb-1">
+                                    Date: <b>{{$order->created_at->format('d/m/y')}}</b>
                                 </h6>
                                 <h6 class="mb-1">Total Without Fees: <b>{{$order->total}} dollars</b></h6>
                                 <h6 class="mb-1">Total With Fees:

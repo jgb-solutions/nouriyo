@@ -78,7 +78,9 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="showOrderModalLabel">
-                                                    Details for order number: <b>{{$order->number}}</b>
+                                                    Number: <b>{{$order->number}}</b>
+                                                    <br/>
+                                                    Date: <b>{{$order->created_at->format('d/m/y')}}</b>
                                                     <br/>
                                                     Taken by: <b>{{$order->agentWhoTookTheOrder->fullName}}</b>
                                                     <small>({{$order->agentWhoTookTheOrder->business}})</small>
